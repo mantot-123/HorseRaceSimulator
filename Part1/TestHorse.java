@@ -28,5 +28,9 @@ public class TestHorse {
         // Updates the confidence of the horse (fail)
         horse1.setConfidence(1.1);
         System.out.println("Horse confidence after updating: " + horse1.getConfidence()); // Shows confidence of the horse
+
+        // Set horse symbol
+        horse1.setSymbol('X');
+        System.out.println("Horse symbol after updating: " + horse1.getSymbol()); // Shows symbol of the horse
     }
 }

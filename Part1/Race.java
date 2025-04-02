@@ -1,5 +1,4 @@
 import java.util.concurrent.TimeUnit;
-import java.lang.Math;
 
 /**
  * A three-horse race, each horse running in its own lane
@@ -14,6 +13,8 @@ public class Race
     private Horse lane1Horse;
     private Horse lane2Horse;
     private Horse lane3Horse;
+
+    private Horse winningHorse; // Stores the winning horse
 
     /**
      * Constructor for objects of class Race
@@ -66,13 +67,16 @@ public class Race
     {
         //declare a local variable to tell us when the race is finished
         boolean finished = false;
+
+        // declare a local variable to tell us if all horses have fallen
+        boolean allHorsesFallen = false;
         
         //reset all the lanes (all horses not fallen and back to 0). 
         lane1Horse.goBackToStart();
         lane2Horse.goBackToStart();
         lane3Horse.goBackToStart();
                       
-        while (!finished)
+        while (!finished && !allHorsesFallen)
         {
             //move each horse
             moveHorse(lane1Horse);
@@ -82,12 +86,25 @@ public class Race
             //print the race positions
             printRace();
             
+            // added code to print the current confidence levels of each horse 
+            System.out.println("Participants:");
+            System.out.println("'" + lane1Horse.getSymbol() + "' - " + lane1Horse.getName() + " (Current confidence: " + lane1Horse.getConfidence() + ")");
+            System.out.println("'" + lane2Horse.getSymbol() + "' - " + lane2Horse.getName() + " (Current confidence: " + lane2Horse.getConfidence() + ")");
+            System.out.println("'" + lane3Horse.getSymbol() + "' - " + lane3Horse.getName() + " (Current confidence: " + lane3Horse.getConfidence() + ")");
+
             //if any of the three horses has won the race is finished
             if ( raceWonBy(lane1Horse) || raceWonBy(lane2Horse) || raceWonBy(lane3Horse) )
             {
+                System.out.println("Winner of the race: " + winningHorse.getName());
                 finished = true;
             }
            
+            // checks if all the horses have fallen
+            if(lane1Horse.hasFallen() && lane2Horse.hasFallen() && lane3Horse.hasFallen()) {
+                System.out.println("All horses have fallen. There is no NO WINNER.");
+                allHorsesFallen = true;
+            } 
+
             //wait for 100 milliseconds
             try{ 
                 TimeUnit.MILLISECONDS.sleep(100);
@@ -132,8 +149,10 @@ public class Race
      */
     private boolean raceWonBy(Horse theHorse)
     {
-        if (theHorse.getDistanceTravelled() == raceLength)
+        // checks if the horse has raced the full distance + there is not already a winner determined yet
+        if (theHorse.getDistanceTravelled() == raceLength && this.winningHorse == null)
         {
+            this.winningHorse = theHorse;
             return true;
         }
         else
