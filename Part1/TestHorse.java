@@ -1,6 +1,6 @@
 public class TestHorse {
     public static void testHorse1(String[] args) {
-        Horse horse1 = new Horse('A', "Thunder", 0.8);
+        Horse horse1 = new Horse('H', "Pippi Longstocking", 0.6);
         System.out.println("Horse name: " + horse1.getName()); // Shows name of the horse
         System.out.println("Horse symbol: " + horse1.getSymbol()); // Shows symbol of the horse
         System.out.println("Horse confidence: " + horse1.getConfidence()); // Shows confidence of the horse
@@ -21,5 +21,12 @@ public class TestHorse {
         // Resets horse distance 
         horse1.goBackToStart();
         System.out.println("DIstance travelled after going back to starting point: " + horse1.getDistanceTravelled());
+
+        // Updates the confidence of the horse (success)
+        horse1.setConfidence(0.9);
+        System.out.println("Horse confidence after updating: " + horse1.getConfidence()); // Shows confidence of the horse
+        // Updates the confidence of the horse (fail)
+        horse1.setConfidence(1.1);
+        System.out.println("Horse confidence after updating: " + horse1.getConfidence()); // Shows confidence of the horse
     }
 }

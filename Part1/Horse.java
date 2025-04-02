@@ -70,7 +70,11 @@ public class Horse
 
     public void setConfidence(double newConfidence)
     {
-        this.confidenceRating = newConfidence;
+        if(newConfidence > 0.0 && newConfidence < 1.0) {
+            this.confidenceRating = newConfidence;
+        } else {
+            System.out.println("ERROR: Confidence must be between 0 and 1.");
+        }
     }
     
     public void setSymbol(char newSymbol)
