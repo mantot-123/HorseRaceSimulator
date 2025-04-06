@@ -14,7 +14,7 @@ public class Race
     private Horse lane2Horse;
     private Horse lane3Horse;
 
-    private Horse winningHorse; // Stores the winning horse
+    private Horse winningHorse = null; // Stores the winning horse
 
     /**
      * Constructor for objects of class Race
@@ -65,6 +65,11 @@ public class Race
      */
     public void startRace()
     {
+        if(lane1Horse == null || lane2Horse == null || lane3Horse == null) {
+            System.out.println("ERROR: There has to be at least 3 horses in the track before starting the race.");
+            return;
+        }
+
         //declare a local variable to tell us when the race is finished
         boolean finished = false;
 
@@ -101,7 +106,7 @@ public class Race
            
             // checks if all the horses have fallen
             if(lane1Horse.hasFallen() && lane2Horse.hasFallen() && lane3Horse.hasFallen()) {
-                System.out.println("All horses have fallen. There is no NO WINNER.");
+                System.out.println("All horses have fallen. There is NO WINNER.");
                 allHorsesFallen = true;
             } 
 
@@ -149,8 +154,8 @@ public class Race
      */
     private boolean raceWonBy(Horse theHorse)
     {
-        // checks if the horse has raced the full distance + there is not already a winner determined yet
-        if (theHorse.getDistanceTravelled() == raceLength && this.winningHorse == null)
+        // checks if the horse has raced the full distance + is not down + there is not already a winner determined yet
+        if (theHorse.getDistanceTravelled() == raceLength && !theHorse.hasFallen() && this.winningHorse == null)
         {
             this.winningHorse = theHorse;
             return true;
