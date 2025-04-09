@@ -24,11 +24,16 @@ public class Race
      */
     public Race(int distance)
     {
-        // initialise instance variables
-        raceLength = distance;
-        lane1Horse = null;
-        lane2Horse = null;
-        lane3Horse = null;
+        // Checks if the user entered a valid race distance (it's a positive number greater than 0)
+        if(distance > 0) {
+            // initialise instance variables
+            raceLength = distance;
+            lane1Horse = null;
+            lane2Horse = null;
+            lane3Horse = null;
+        } else {
+            System.out.println("ERROR: Cannot start race. The race track distance you entered is negative or 0.");
+        }
     }
     
     /**
@@ -39,6 +44,14 @@ public class Race
      */
     public void addHorse(Horse theHorse, int laneNumber)
     {
+        // Check if the horse to add is already assigned in a lane
+        boolean horseAlreadyInLane = theHorse == lane1Horse || theHorse == lane2Horse || theHorse == lane3Horse;
+
+        if(horseAlreadyInLane == true) {
+            System.out.println("ERROR: Cannot add horse " + theHorse.getName() + " to lane " + laneNumber + " because it's already in a lane.");
+            return;
+        }
+
         if (laneNumber == 1)
         {
             lane1Horse = theHorse;
@@ -65,7 +78,12 @@ public class Race
      */
     public void startRace()
     {
-        if(lane1Horse == null || lane2Horse == null || lane3Horse == null) {
+        if(this.raceLength == 0) {
+            System.out.println("ERROR: Cannot start race because you have not set a race track distance yet.");
+            return;
+        }
+
+        if(this.lane1Horse == null || this.lane2Horse == null || this.lane3Horse == null) {
             System.out.println("ERROR: There has to be at least 3 horses in the track before starting the race.");
             return;
         }
@@ -73,7 +91,7 @@ public class Race
         //declare a local variable to tell us when the race is finished
         boolean finished = false;
 
-        // declare a local variable to tell us if all horses have fallen
+        // Local variable to check if all horses have fallen
         boolean allHorsesFallen = false;
         
         //reset all the lanes (all horses not fallen and back to 0). 
@@ -90,12 +108,6 @@ public class Race
                         
             //print the race positions
             printRace();
-            
-            // added code to print the current confidence levels of each horse 
-            System.out.println("Participants:");
-            System.out.println("'" + lane1Horse.getSymbol() + "' - " + lane1Horse.getName() + " (Current confidence: " + lane1Horse.getConfidence() + ")");
-            System.out.println("'" + lane2Horse.getSymbol() + "' - " + lane2Horse.getName() + " (Current confidence: " + lane2Horse.getConfidence() + ")");
-            System.out.println("'" + lane3Horse.getSymbol() + "' - " + lane3Horse.getName() + " (Current confidence: " + lane3Horse.getConfidence() + ")");
 
             //if any of the three horses has won the race is finished
             if ( raceWonBy(lane1Horse) || raceWonBy(lane2Horse) || raceWonBy(lane3Horse) )
@@ -224,6 +236,9 @@ public class Race
         
         //print the | for the end of the track
         System.out.print('|');
+
+        // Prints the horse's name and its current confidence level
+        System.out.print(" " + theHorse.getName() + " (Current confidence: " + theHorse.getConfidence() + ")");
     }
         
     

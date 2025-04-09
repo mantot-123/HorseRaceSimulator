@@ -1,5 +1,5 @@
 public class TestHorse {
-    public static void testHorse1(String[] args) {
+    public static void testHorse1() {
         Horse horse1 = new Horse('H', "Pippi Longstocking", 0.6);
         System.out.println("Horse name: " + horse1.getName()); // Shows name of the horse
         System.out.println("Horse symbol: " + horse1.getSymbol()); // Shows symbol of the horse
@@ -17,6 +17,7 @@ public class TestHorse {
         // Updates the "fallen" flag of the horse
         horse1.fall();
         System.out.println("Is the horse fallen: " + horse1.hasFallen());
+        System.out.println("Confidence level after falling: " + horse1.getConfidence());
 
         // Resets horse distance 
         horse1.goBackToStart();

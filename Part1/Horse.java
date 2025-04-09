@@ -31,6 +31,12 @@ public class Horse
     public void fall()
     {
         this.isFallen = true;
+
+        // decrease confidence rating by 0.1
+        // only do this as long as the confidence rating is above 0.1
+        if (this.confidenceRating > 0.1) {
+            setConfidence(this.confidenceRating - 0.1);
+        }
     }
     
     public double getConfidence()
