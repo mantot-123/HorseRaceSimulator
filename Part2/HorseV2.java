@@ -1,5 +1,3 @@
-package Part2;
-
 /**
  * HorseV2.java
  * Stores attributes and all related getter and setter methods about a horse
@@ -7,7 +5,7 @@ package Part2;
  * @author Emman Ruiz Cunanan Medina
  * @version v1.0
  */
-public class Horse
+public class HorseV2
 {
     //Fields of class Horse
     private String name;
@@ -21,7 +19,7 @@ public class Horse
     /**
      * Constructor for objects of class Horse
      */
-    public Horse(char horseSymbol, String horseName, double horseConfidence)
+    public HorseV2(char horseSymbol, String horseName, double horseConfidence)
     {
         this.name = horseName;
         this.symbol = horseSymbol;
