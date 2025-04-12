@@ -13,13 +13,13 @@ public class RaceGUI {
     private ArrayList<HorseV2> laneHorses = new ArrayList<HorseV2>();
     private HorseV2 winningHorse;
 
-    public RaceGUI(int raceLength) {
+    public RaceGUI() {
         openRaceMenuWindow();
     }
 
     public void openRaceMenuWindow() {
         menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        menuFrame.setSize(1000, 500);
+        menuFrame.setSize(1000, 550);
         menuFrame.setLayout(new BorderLayout());
 
         JPanel panel1 = new JPanel(new GridLayout(0, 2, 10, 10));
@@ -57,6 +57,29 @@ public class RaceGUI {
         JButton startRaceButton = new JButton("Start race");
         JButton cancelButton = new JButton("Cancel");
 
+        startRaceButton.addActionListener(e -> {
+            // Check for any empty horse name and symbol fields
+            for(JTextField nameField: this.horseNameFields) {
+                String horseName = nameField.getText();
+                if(horseName.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "ERROR: One of your horses' names are empty! Please enter a name for all horses.");
+                    return;
+                }
+            }
+
+            for(JTextField symbolField: this.horseSymbolFields) {
+                String horseSymbol = symbolField.getText();
+                if(horseSymbol.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "ERROR: One of your horses' symbols are empty! Please enter a symbol for all horses.");
+                    return;
+                } else if(horseSymbol.length() > 1) {
+                    JOptionPane.showMessageDialog(null, "ERROR: You can only use 1 character as a symbol for all your horses. Check your horses and try again.");
+                }
+            }
+            
+            setRaceConfiguration();
+        });
+
         panel2.add(startRaceButton);
         panel2.add(cancelButton);
 
@@ -65,11 +88,27 @@ public class RaceGUI {
         menuFrame.setVisible(true);
     }
 
+    public void setRaceConfiguration() {
+        // Add all of the horses in the fields to the participating horses list ("laneHorses")
+        for(int i = 0; i < horseNameFields.size(); i++) {
+            String horseName = this.horseNameFields.get(i).getText();
+            char horseSymbol = this.horseSymbolFields.get(i).getText().charAt(0);
+            double initialConfidence = 0.5; // Starting confidence rating
+            HorseV2 newHorse = new HorseV2(horseSymbol, horseName, initialConfidence);
+            this.laneHorses.add(newHorse);
+        }
+
+        // Temporary test code. This can be removed....
+        for(HorseV2 horse: this.laneHorses) {
+            System.out.println("Horse name: " + horse.getName() + ", symbol: " + horse.getSymbol() + ", confidence: " + horse.getConfidence());
+        }
+    }
+
     public void addHorse(HorseV2 horseToAdd) {
-        if(!laneHorses.contains(horseToAdd)) {
-            laneHorses.add(horseToAdd);
+        if(!this.laneHorses.contains(horseToAdd)) {
+            this.laneHorses.add(horseToAdd);
         } else{
-            int laneNo = laneHorses.indexOf(horseToAdd) + 1;
+            int laneNo = this.laneHorses.indexOf(horseToAdd) + 1;
             JOptionPane.showMessageDialog(null, "ERROR: The horse " + horseToAdd.getName() + " is already added to lane " + laneNo + ". Please add a different horse.");
             return;
         }
