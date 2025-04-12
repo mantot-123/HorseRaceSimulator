@@ -58,6 +58,12 @@ public class RaceGUI {
         JButton cancelButton = new JButton("Cancel");
 
         startRaceButton.addActionListener(e -> {
+            // Check if there are at least 2 horses to start the race
+            if(horseCount < 2) {
+                JOptionPane.showMessageDialog(null, "ERROR: You must have at least 2 horses before starting the race.");
+                return;
+            }
+
             // Check for any empty horse name and symbol fields
             for(JTextField nameField: this.horseNameFields) {
                 String horseName = nameField.getText();
@@ -107,7 +113,7 @@ public class RaceGUI {
     public void addHorse(HorseV2 horseToAdd) {
         if(!this.laneHorses.contains(horseToAdd)) {
             this.laneHorses.add(horseToAdd);
-        } else{
+        } else {
             int laneNo = this.laneHorses.indexOf(horseToAdd) + 1;
             JOptionPane.showMessageDialog(null, "ERROR: The horse " + horseToAdd.getName() + " is already added to lane " + laneNo + ". Please add a different horse.");
             return;
