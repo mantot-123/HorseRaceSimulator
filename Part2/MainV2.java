@@ -1,5 +1,5 @@
 public class MainV2 {
     public static void main(String[] args) {
-        RaceGUI race = new RaceGUI();
+        RaceMenu raceMenu = new RaceMenu();
     }
 }
