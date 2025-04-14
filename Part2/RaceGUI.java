@@ -57,8 +57,13 @@ public class RaceGUI {
 
     // Loads the options panel for the race
     public void loadOptionsPanel() {
+        JButton startRaceBtn = new JButton("Start race");
         JButton openBettingsBtn = new JButton("Open bettings");
         JButton openResultsBtn = new JButton("Open results");
+        optionsPanel.add(startRaceBtn);
+        startRaceBtn.addActionListener(e -> {
+            this.showRace();
+        });
         optionsPanel.add(openBettingsBtn);
         optionsPanel.add(openResultsBtn);
     }
@@ -79,7 +84,6 @@ public class RaceGUI {
 
         loadOptionsPanel();
         loadRaceFrame();
-        showRace();
     }
 
     private void showRace() {
@@ -87,6 +91,7 @@ public class RaceGUI {
 
         for(HorseV2 horse : this.laneHorses) {
             horse.goBackToStart();
+            horse.resetFallen();
         }
 
         // Loop until a horse wins or all horses fall
@@ -140,7 +145,7 @@ public class RaceGUI {
     private void returnLaneText(HorseV2 theHorse) {
         int noOfSpacesBefore = theHorse.getDistanceTravelled();
 
-        String spacesBefore = returnCharSequence(' ', noOfSpacesBefore);
+        String spacesBefore = returnCharSequence(' ', noOfSpacesBefore*25);
         String lane = spacesBefore;
 
         // Get the position of the horse in the lane
@@ -158,8 +163,8 @@ public class RaceGUI {
             hLabel.setText(lane + theHorse.getSymbol());
         }
 
-        // frame.revalidate();
-        // frame.repaint();
+        frame.revalidate();
+        frame.repaint();
     }
 
     /***
