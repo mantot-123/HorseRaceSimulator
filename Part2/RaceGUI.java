@@ -74,9 +74,45 @@ public class RaceGUI {
         for(HorseV2 horse: this.laneHorses) {
             addHorseToLanePanel(horse);
         }
+
         loadOptionsPanel();
         loadRaceFrame();
-        
+        showRace();
+    }
+
+    private void showRace() {
+        boolean finished = false;
+
+        for(HorseV2 horse : this.laneHorses) {
+            horse.goBackToStart();
+        }
+
+        // Loop until a horse wins or all horses fall
+        while(!finished) {
+            for(HorseV2 horse: this.laneHorses) {
+                moveHorse(horse);
+            }
+
+            for(HorseV2 horse: this.laneHorses) {
+                returnLaneText(horse);
+            }
+
+            for(HorseV2 horse: this.laneHorses) {
+                if(raceWonBy(horse)) {
+                    JOptionPane.showMessageDialog(null, "The winner is: " + horse.getName());
+                    finished = true;
+                }
+            }
+
+            if(this.allHorsesFallen()) {
+                JOptionPane.showMessageDialog(null, "All horses have fallen. There is NO WINNER.");
+                finished = true;
+            }
+
+            try {
+                TimeUnit.MILLISECONDS.sleep(100);
+            } catch (Exception e) {}
+        }
     }
 
     /** 
@@ -119,6 +155,9 @@ public class RaceGUI {
         {
             hLabel.setText(lane + theHorse.getSymbol());
         }
+
+        frame.revalidate();
+        frame.repaint();
     }
 
     /***
