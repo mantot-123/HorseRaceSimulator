@@ -38,7 +38,12 @@ public class HorseV2
             setConfidence(this.confidenceRating - 0.1);
         }
     }
-    
+
+    public void resetFallen()
+    {
+        this.isFallen = false;
+    }
+
     public double getConfidence()
     {
         return this.confidenceRating;
