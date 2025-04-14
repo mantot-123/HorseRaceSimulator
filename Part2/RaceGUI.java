@@ -1,5 +1,5 @@
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 
@@ -94,8 +94,8 @@ public class RaceGUI {
             horse.resetFallen();
         }
 
-        // Loop until a horse wins or all horses fall
-        while(!finished) {
+        Timer timer = new Timer(100, e -> {
+            // Loop until a horse wins or all horses fall
             for(HorseV2 horse: this.laneHorses) {
                 moveHorse(horse);
             }
@@ -107,19 +107,18 @@ public class RaceGUI {
             for(HorseV2 horse: this.laneHorses) {
                 if(raceWonBy(horse)) {
                     JOptionPane.showMessageDialog(null, "The winner is: " + horse.getName());
-                    finished = true;
+                    ((Timer)e.getSource()).stop(); // Stops the timer
                 }
             }
 
             if(this.allHorsesFallen()) {
                 JOptionPane.showMessageDialog(null, "All horses have fallen. There is NO WINNER.");
-                finished = true;
+                ((Timer)e.getSource()).stop();
             }
 
-            try {
-                TimeUnit.MILLISECONDS.sleep(100);
-            } catch (Exception e) {}
-        }
+        });
+
+        timer.start();
     }
 
     /** 
@@ -145,7 +144,7 @@ public class RaceGUI {
     private void returnLaneText(HorseV2 theHorse) {
         int noOfSpacesBefore = theHorse.getDistanceTravelled();
 
-        String spacesBefore = returnCharSequence(' ', noOfSpacesBefore*25);
+        String spacesBefore = returnCharSequence(' ', noOfSpacesBefore * 25);
         String lane = spacesBefore;
 
         // Get the position of the horse in the lane
