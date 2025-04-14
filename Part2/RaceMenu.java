@@ -121,5 +121,11 @@ public class RaceMenu {
         for(HorseV2 horse: this.race.getLaneHorses()) {
             System.out.println("Horse name: " + horse.getName() + ", symbol: " + horse.getSymbol() + ", confidence: " + horse.getConfidence());
         }
+
+        this.confirmStartRace();
+    }
+
+    public void confirmStartRace() {
+        this.race.startRaceGUI();
     }
 }
