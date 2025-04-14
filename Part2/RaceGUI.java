@@ -7,7 +7,7 @@ public class RaceGUI {
     JFrame frame = new JFrame("Ongoing race...");
     JPanel horseLanePanel = new JPanel(new GridLayout(0, 1, 10, 10));
     JPanel optionsPanel = new JPanel(new GridLayout(1, 0, 10, 10));
-    ArrayList<JLabel> horseLaneLabels = new ArrayList<JLabel>();
+    ArrayList<JTextField> horseLaneLabels = new ArrayList<JTextField>();
 
     private int raceLength;
     private ArrayList<HorseV2> laneHorses = new ArrayList<HorseV2>();
@@ -65,7 +65,9 @@ public class RaceGUI {
 
     // Creates a JLabel object to show a lane horse
     public void addHorseToLanePanel(HorseV2 horse) {
-        JLabel newLaneHorse = new JLabel(Character.toString(horse.getSymbol()));
+        JTextField newLaneHorse = new JTextField(15);
+        newLaneHorse.setText(Character.toString(horse.getSymbol()));
+        newLaneHorse.setEditable(false);
         horseLanePanel.add(newLaneHorse);
         horseLaneLabels.add(newLaneHorse);
     }
@@ -143,7 +145,7 @@ public class RaceGUI {
 
         // Get the position of the horse in the lane
         int horsePosition = this.laneHorses.indexOf(theHorse);
-        JLabel hLabel = horseLaneLabels.get(horsePosition);
+        JTextField hLabel = horseLaneLabels.get(horsePosition);
 
         //if the horse has fallen then print dead
         //else print the horse's symbol
@@ -156,8 +158,8 @@ public class RaceGUI {
             hLabel.setText(lane + theHorse.getSymbol());
         }
 
-        frame.revalidate();
-        frame.repaint();
+        // frame.revalidate();
+        // frame.repaint();
     }
 
     /***
