@@ -5,6 +5,9 @@ import javax.swing.*;
 
 public class RaceGUI {
     JFrame frame = new JFrame("Ongoing race...");
+    JPanel horseLanePanel = new JPanel(new GridLayout(0, 1, 10, 10));
+    JPanel optionsPanel = new JPanel(new GridLayout(1, 0, 10, 10));
+    ArrayList<JLabel> horseLanes = new ArrayList<JLabel>();
 
     private int raceLength;
     private ArrayList<HorseV2> laneHorses = new ArrayList<HorseV2>();
@@ -41,13 +44,37 @@ public class RaceGUI {
     public void loadRaceFrame() {
         this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.frame.setLayout(new BorderLayout());
-
         // Adjusts the width of the frame based on the race track length
         this.frame.setSize(50 * this.raceLength, 500);
+        // Locks the size of the frame so it can't be resized
+        this.frame.setResizable(false);
+
+        this.frame.add(this.horseLanePanel, BorderLayout.CENTER);
+        this.frame.add(this.optionsPanel, BorderLayout.SOUTH);
+
         this.frame.setVisible(true);
     }
 
+    // Loads the options panel for the race
+    public void loadOptionsPanel() {
+        JButton openBettingsBtn = new JButton("Open bettings");
+        JButton openResultsBtn = new JButton("Open results");
+        optionsPanel.add(openBettingsBtn);
+        optionsPanel.add(openResultsBtn);
+    }
+
+    // Creates a JLabel object to show a lane horse
+    public void addHorseToLanePanel(HorseV2 horse) {
+        JLabel newLaneHorse = new JLabel(Character.toString(horse.getSymbol()));
+        horseLanePanel.add(newLaneHorse);
+        horseLanes.add(newLaneHorse);
+    }
+
     public void startRaceGUI() {
+        for(HorseV2 horse: this.laneHorses) {
+            addHorseToLanePanel(horse);
+        }
+        loadOptionsPanel();
         loadRaceFrame();
     }
 
