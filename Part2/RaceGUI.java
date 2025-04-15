@@ -49,7 +49,7 @@ public class RaceGUI {
         this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.frame.setLayout(new BorderLayout());
         // Adjusts the width of the frame based on the race track length
-        this.frame.setSize(50 * this.raceLength, 500);
+        this.frame.setSize(58 * this.raceLength, 350);
         // Locks the size of the frame so it can't be resized
         this.frame.setResizable(false);
 
@@ -73,10 +73,10 @@ public class RaceGUI {
         optionsPanel.add(openResultsBtn);
     }
 
-    // Creates a JLabel object to show a lane horse
+    // Creates a JLabel object to show a lane horse + adds it to the lane panel
     public void addHorseToLanePanel(HorseV2 horse) {
         JTextField newLaneHorse = new JTextField(15);
-        newLaneHorse.setFont(new Font("Arial", Font.BOLD, 12));
+        newLaneHorse.setFont(new Font("Arial", Font.BOLD, 14));
         newLaneHorse.setText(Character.toString(horse.getSymbol()));
         newLaneHorse.setEditable(false);
         horseLanePanel.add(newLaneHorse);
