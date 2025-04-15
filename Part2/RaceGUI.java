@@ -5,9 +5,13 @@ import javax.swing.*;
 
 public class RaceGUI {
     JFrame frame = new JFrame("Ongoing race...");
+
+    JPanel topPanel = new JPanel(new GridLayout(0, 1));
     JPanel horseLanePanel = new JPanel(new GridLayout(0, 1, 10, 10));
     JPanel optionsPanel = new JPanel(new GridLayout(1, 0, 10, 10));
+
     ArrayList<JTextField> horseLaneLabels = new ArrayList<JTextField>();
+    ArrayList<JLabel> topPanelLabels = new ArrayList<JLabel>();
 
     private int raceLength;
     private ArrayList<HorseV2> laneHorses = new ArrayList<HorseV2>();
@@ -53,10 +57,31 @@ public class RaceGUI {
         // Locks the size of the frame so it can't be resized
         this.frame.setResizable(false);
 
+        this.frame.add(this.topPanel, BorderLayout.NORTH);
         this.frame.add(this.horseLanePanel, BorderLayout.CENTER);
         this.frame.add(this.optionsPanel, BorderLayout.SOUTH);
 
         this.frame.setVisible(true);
+    }
+
+    // Adds a horse's name and confidence to the top panel
+    public void addHorseToTopPanel(HorseV2 horse) {
+        JLabel horseLabel = new JLabel(horse.getName() + " (Current confidence: " + (horse.getConfidence()*100) + "%)");
+        horseLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        topPanel.add(horseLabel);
+        topPanelLabels.add(horseLabel);
+        frame.revalidate();
+        frame.repaint();
+    }
+
+    // Creates a JLabel object to show a lane horse + adds it to the lane panel
+    public void addHorseToLanePanel(HorseV2 horse) {
+        JTextField newLaneHorse = new JTextField(15);
+        newLaneHorse.setFont(new Font("Arial", Font.BOLD, 14));
+        newLaneHorse.setText(Character.toString(horse.getSymbol()));
+        newLaneHorse.setEditable(false);
+        horseLanePanel.add(newLaneHorse);
+        horseLaneLabels.add(newLaneHorse);
     }
 
     // Loads the options panel for the race
@@ -73,17 +98,13 @@ public class RaceGUI {
         optionsPanel.add(openResultsBtn);
     }
 
-    // Creates a JLabel object to show a lane horse + adds it to the lane panel
-    public void addHorseToLanePanel(HorseV2 horse) {
-        JTextField newLaneHorse = new JTextField(15);
-        newLaneHorse.setFont(new Font("Arial", Font.BOLD, 14));
-        newLaneHorse.setText(Character.toString(horse.getSymbol()));
-        newLaneHorse.setEditable(false);
-        horseLanePanel.add(newLaneHorse);
-        horseLaneLabels.add(newLaneHorse);
-    }
-
     public void startRaceGUI() {
+        // Horses' details added to the top panel
+        for(HorseV2 horse: this.laneHorses) {
+            addHorseToTopPanel(horse);
+        }
+
+        // Lane horses added
         for(HorseV2 horse: this.laneHorses) {
             addHorseToLanePanel(horse);
         }
@@ -92,9 +113,16 @@ public class RaceGUI {
         loadRaceFrame();
     }
 
+    // Simulates the horse race when called.
     private void showRace() {
+        // Temporary test code. This can be removed....
+        for(HorseV2 horse: this.getLaneHorses()) {
+            System.out.println("Horse name: " + horse.getName() + ", symbol: " + horse.getSymbol() + ", confidence: " + horse.getConfidence());
+        }
+
         boolean finished = false;
 
+        // Puts all the horses back to their starting position + resets their fallen status
         for(HorseV2 horse : this.laneHorses) {
             horse.goBackToStart();
             horse.resetFallen();
@@ -125,6 +153,8 @@ public class RaceGUI {
         });
 
         timer.start();
+        frame.revalidate();
+        frame.repaint();
     }
 
     /** 

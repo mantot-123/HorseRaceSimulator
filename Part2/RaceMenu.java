@@ -118,11 +118,6 @@ public class RaceMenu {
             this.race.addHorse(newHorse);
         }
 
-        // Temporary test code. This can be removed....
-        for(HorseV2 horse: this.race.getLaneHorses()) {
-            System.out.println("Horse name: " + horse.getName() + ", symbol: " + horse.getSymbol() + ", confidence: " + horse.getConfidence());
-        }
-
         this.confirmStartRace();
     }
 
