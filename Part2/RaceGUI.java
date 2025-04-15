@@ -76,6 +76,7 @@ public class RaceGUI {
     // Creates a JLabel object to show a lane horse
     public void addHorseToLanePanel(HorseV2 horse) {
         JTextField newLaneHorse = new JTextField(15);
+        newLaneHorse.setFont(new Font("Arial", Font.BOLD, 12));
         newLaneHorse.setText(Character.toString(horse.getSymbol()));
         newLaneHorse.setEditable(false);
         horseLanePanel.add(newLaneHorse);
@@ -138,6 +139,7 @@ public class RaceGUI {
         if (theHorse.getDistanceTravelled() >= raceLength && !theHorse.hasFallen() && this.winningHorse == null)
         {
             this.winningHorse = theHorse;
+            theHorse.win(); // Increase the horse's confidence rating
             return true;
         }
         else

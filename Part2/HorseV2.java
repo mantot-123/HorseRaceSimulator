@@ -39,6 +39,14 @@ public class HorseV2
         }
     }
 
+    public void win() {
+        // Increase confidence rating by 0.1
+        if (this.confidenceRating < 1.0) {
+            this.setConfidence(this.confidenceRating + 0.1);
+        }
+    }
+
+
     public void resetFallen()
     {
         this.isFallen = false;
@@ -84,10 +92,10 @@ public class HorseV2
         if(newConfidence > 0.0 && newConfidence < 1.0) {
             this.confidenceRating = newConfidence;
         } else {
-            System.out.println("ERROR: Confidence must be between 0 and 1.");
+            System.out.println("Confidence must be between 0 and 1. Horse " + this.getName() + "'s confidence rating stays at " + this.getConfidence());
         }
     }
-    
+
     public void setSymbol(char newSymbol)
     {
         this.symbol = newSymbol;
