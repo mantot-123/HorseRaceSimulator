@@ -21,6 +21,10 @@ public class RaceGUI {
         return this.laneHorses;
     }
 
+    public void resetWinner() {
+        this.winningHorse = null;
+    }
+
     public boolean allHorsesFallen() {
         for (HorseV2 horse : this.laneHorses) {
             if (!horse.hasFallen()) {
@@ -62,7 +66,8 @@ public class RaceGUI {
         JButton openResultsBtn = new JButton("Open results");
         optionsPanel.add(startRaceBtn);
         startRaceBtn.addActionListener(e -> {
-            this.showRace();
+            resetWinner();
+            showRace();
         });
         optionsPanel.add(openBettingsBtn);
         optionsPanel.add(openResultsBtn);
@@ -130,7 +135,7 @@ public class RaceGUI {
     private boolean raceWonBy(HorseV2 theHorse)
     {
         // checks if the horse has raced the full distance + is not down + there is not already a winner determined yet
-        if (theHorse.getDistanceTravelled() == raceLength && !theHorse.hasFallen() && this.winningHorse == null)
+        if (theHorse.getDistanceTravelled() >= raceLength && !theHorse.hasFallen() && this.winningHorse == null)
         {
             this.winningHorse = theHorse;
             return true;
@@ -142,9 +147,9 @@ public class RaceGUI {
     }
 
     private void returnLaneText(HorseV2 theHorse) {
-        int noOfSpacesBefore = theHorse.getDistanceTravelled();
+        int noOfSpacesBefore = theHorse.getDistanceTravelled() * 14;
 
-        String spacesBefore = returnCharSequence(' ', noOfSpacesBefore * 25);
+        String spacesBefore = returnCharSequence(' ', noOfSpacesBefore);
         String lane = spacesBefore;
 
         // Get the position of the horse in the lane
