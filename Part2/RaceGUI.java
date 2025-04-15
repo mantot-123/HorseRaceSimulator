@@ -89,11 +89,16 @@ public class RaceGUI {
         JButton startRaceBtn = new JButton("Start race");
         JButton openBettingsBtn = new JButton("Open bettings");
         JButton openResultsBtn = new JButton("Open results");
-        optionsPanel.add(startRaceBtn);
         startRaceBtn.addActionListener(e -> {
             resetWinner();
             showRace();
         });
+
+        openBettingsBtn.addActionListener(e -> {
+            ViewBets viewBets = new ViewBets();
+        });
+
+        optionsPanel.add(startRaceBtn);
         optionsPanel.add(openBettingsBtn);
         optionsPanel.add(openResultsBtn);
     }
