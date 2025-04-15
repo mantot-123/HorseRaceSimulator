@@ -65,6 +65,7 @@ public class RaceMenu {
                 }
             } catch(NumberFormatException exception) {
                 JOptionPane.showMessageDialog(null, "ERROR: Please enter a valid race length. It must be a whole number, and it has to be at least 10 blocks long.");
+                return;
             }
 
             // Check if there are at least 2 horses to start the race
