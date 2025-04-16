@@ -8,6 +8,7 @@
 public class HorseV2
 {
     //Fields of class Horse
+    private String id;
     private String name;
     private char symbol;
     private int distanceTravelled = 0;
@@ -21,6 +22,16 @@ public class HorseV2
      */
     public HorseV2(char horseSymbol, String horseName, double horseConfidence)
     {
+        this.id = Helpers.randomString(10);
+        this.name = horseName;
+        this.symbol = horseSymbol;
+        this.confidenceRating = horseConfidence;
+    }
+
+    // Override
+    public HorseV2(String id, char horseSymbol, String horseName, double horseConfidence)
+    {
+        this.id = id;
         this.name = horseName;
         this.symbol = horseSymbol;
         this.confidenceRating = horseConfidence;
@@ -50,6 +61,10 @@ public class HorseV2
     public void resetFallen()
     {
         this.isFallen = false;
+    }
+
+    public String getId() {
+        return this.id;
     }
 
     public double getConfidence()

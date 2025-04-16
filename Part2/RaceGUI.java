@@ -21,6 +21,12 @@ public class RaceGUI {
         this.raceLength = raceLength;
     }
 
+    // Override
+    public RaceGUI(int raceLength, ArrayList<HorseV2> horses) {
+        this.raceLength = raceLength;
+        this.laneHorses = horses;
+    }
+
     public ArrayList<HorseV2> getLaneHorses() {
         return this.laneHorses;
     }
@@ -122,7 +128,7 @@ public class RaceGUI {
     private void showRace() {
         // Temporary test code. This can be removed....
         for(HorseV2 horse: this.getLaneHorses()) {
-            System.out.println("Horse name: " + horse.getName() + ", symbol: " + horse.getSymbol() + ", confidence: " + horse.getConfidence());
+            System.out.println("Horse ID: " + horse.getId() + ", name: " + horse.getName() + ", symbol: " + horse.getSymbol() + ", confidence: " + horse.getConfidence());
         }
 
         boolean finished = false;

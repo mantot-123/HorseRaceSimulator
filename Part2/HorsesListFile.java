@@ -16,11 +16,17 @@ public class HorsesListFile {
             String name = horse.getName();
             char symbol = horse.getSymbol();
             double confidence = horse.getConfidence();
-            writer.println(name + "," + symbol + "," + confidence);
+            writer.println(id + "," + name + "," + symbol + "," + confidence);
             writer.close();
         } catch(IOException e) {
             System.out.println("ERROR: An error has occurred while writing to the file " + FILENAME);
             e.printStackTrace();
+        }
+    }
+
+    public void saveMultipleHorses(ArrayList<HorseV2> horses) {
+        for(HorseV2 horse: horses) {
+            saveHorse(horse);
         }
     }
 
@@ -44,19 +50,20 @@ public class HorsesListFile {
         try(BufferedReader reader = new BufferedReader(new FileReader(FILENAME))) {
             loadedHorses.clear();
             String line = reader.readLine();
-            while(line != null) {
+            while(line != null && !line.isEmpty()) {
                 String[] horseData = line.split(",");
                 if(horseData.length == NO_OF_COLUMNS) {
-                    String name = horseData[0];
-                    char symbol = horseData[1].charAt(0);
-                    double confidence = Double.parseDouble(horseData[2]);
+                    String id = horseData[0];
+                    String name = horseData[1];
+                    char symbol = horseData[2].charAt(0);
+                    double confidence = Double.parseDouble(horseData[3]);
 
-                    if(horseData[1].length() > 1) {
+                    if(horseData[2].length() > 1) {
                         throw new IllegalArgumentException("Symbol must be a single character. Found a non single character: " + horseData[1]);
                     }
 
-                    HorseV2 newHorse = new HorseV2(symbol, name, confidence);
-                    loadedHorses.add(newHorse);
+                    HorseV2 newHorse = new HorseV2(id, symbol, name, confidence);
+                    this.loadedHorses.add(newHorse);
                 } else {
                     throw new IOException("Invalid data format in line " + line + " of the CSV file");
                 }
@@ -82,7 +89,7 @@ public class HorsesListFile {
         }
     }
 
-    public List<HorseV2> getHorsesList() {
+    public ArrayList<HorseV2> getHorsesList() {
         return this.loadedHorses;
     }
 }
