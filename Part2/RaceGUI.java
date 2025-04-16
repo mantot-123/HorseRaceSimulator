@@ -152,12 +152,16 @@ public class RaceGUI {
             for(HorseV2 horse: this.laneHorses) {
                 if(raceWonBy(horse)) {
                     JOptionPane.showMessageDialog(null, "The winner is: " + horse.getName());
+                    HorsesListFile horsesFile = new HorsesListFile();
+                    horsesFile.saveMultipleHorses(laneHorses, false);
                     ((Timer)e.getSource()).stop(); // Stops the timer
                 }
             }
 
             if(this.allHorsesFallen()) {
                 JOptionPane.showMessageDialog(null, "All horses have fallen. There is NO WINNER.");
+                HorsesListFile horsesFile = new HorsesListFile();
+                horsesFile.saveMultipleHorses(laneHorses, false);
                 ((Timer)e.getSource()).stop();
             }
 
