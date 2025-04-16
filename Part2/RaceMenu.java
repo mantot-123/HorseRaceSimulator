@@ -13,7 +13,24 @@ public class RaceMenu {
     private int horseCount = 0;
 
     public RaceMenu() {
-        openRaceMenuWindow();
+        HorsesListFile horsesFile = new HorsesListFile();
+        if(horsesFile.getHorsesList().size() == 0) {
+            openRaceMenuWindow();
+        } else {
+            int loadProgressConfirm = JOptionPane.showConfirmDialog(null, "You currently have some saved horses. Would you like to load them?\nNOTE: Clicking 'no' will clear all your already saved horses. Choose wisely!", "Load progress", JOptionPane.YES_NO_CANCEL_OPTION);
+            switch(loadProgressConfirm) {
+                case 0:
+                    this.race = new RaceGUI(20, horsesFile.getHorsesList());
+                    this.confirmStartRace();
+                    break;
+                case 1:
+                    horsesFile.clearSavedHorses();
+                    openRaceMenuWindow();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     public void openRaceMenuWindow() {
@@ -118,6 +135,8 @@ public class RaceMenu {
             this.race.addHorse(newHorse);
         }
 
+        HorsesListFile horsesFile = new HorsesListFile();
+        horsesFile.saveMultipleHorses(this.race.getLaneHorses());
         this.confirmStartRace();
     }
 
