@@ -94,7 +94,8 @@ public class RaceGUI {
     public void loadOptionsPanel() {
         JButton startRaceBtn = new JButton("Start race");
         JButton openBettingsBtn = new JButton("Open bettings");
-        JButton openResultsBtn = new JButton("Open results");
+        JButton openPastBetsBtn = new JButton("Open previous bets");
+        JButton openStatsBtn = new JButton("Statistics");
         startRaceBtn.addActionListener(e -> {
             resetWinner();
             showRace();
@@ -106,7 +107,8 @@ public class RaceGUI {
 
         optionsPanel.add(startRaceBtn);
         optionsPanel.add(openBettingsBtn);
-        optionsPanel.add(openResultsBtn);
+        optionsPanel.add(openPastBetsBtn);
+        optionsPanel.add(openStatsBtn);
     }
 
     public void startRaceGUI() {
