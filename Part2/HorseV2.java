@@ -28,7 +28,7 @@ public class HorseV2
         this.confidenceRating = horseConfidence;
     }
 
-    // Override
+    // Override = You can add an optional ID to your horse
     public HorseV2(String id, char horseSymbol, String horseName, double horseConfidence)
     {
         this.id = id;

@@ -8,10 +8,11 @@ public class HorsesListFile {
         loadHorses();
     }
 
-    public void saveHorse(HorseV2 horse) {
+    public void saveHorse(HorseV2 horse, boolean append) {
         final int ID_SIZE = 10;
         final String FILENAME = "Horses.csv";
-        try(PrintWriter writer = new PrintWriter(new FileOutputStream(FILENAME, true))) {
+
+        try(PrintWriter writer = new PrintWriter(new FileOutputStream(FILENAME, append))) {
             String id = Helpers.randomString(ID_SIZE);
             String name = horse.getName();
             char symbol = horse.getSymbol();
@@ -24,9 +25,13 @@ public class HorsesListFile {
         }
     }
 
-    public void saveMultipleHorses(ArrayList<HorseV2> horses) {
+    public void saveMultipleHorses(ArrayList<HorseV2> horses, boolean append) {
+        if(!append) {
+            clearSavedHorses(); // Overwrites the contents of the save file if "append" is true
+        }
+        
         for(HorseV2 horse: horses) {
-            saveHorse(horse);
+            saveHorse(horse, true);
         }
     }
 
