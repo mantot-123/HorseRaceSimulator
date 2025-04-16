@@ -136,7 +136,7 @@ public class RaceMenu {
         }
 
         HorsesListFile horsesFile = new HorsesListFile();
-        horsesFile.saveMultipleHorses(this.race.getLaneHorses());
+        horsesFile.saveMultipleHorses(this.race.getLaneHorses(), false);
         this.confirmStartRace();
     }
 
