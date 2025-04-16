@@ -9,6 +9,7 @@ public class HorseV2
 {
     //Fields of class Horse
     private String id;
+    private String equipment;
     private String name;
     private char symbol;
     private int distanceTravelled = 0;
@@ -87,6 +88,10 @@ public class HorseV2
         return this.symbol;
     }
     
+    public String getEquipment() {
+        return this.equipment;
+    }
+
     public void goBackToStart()
     {
         this.distanceTravelled = 0;   
