@@ -9,6 +9,8 @@ public class RaceMenu {
     private JFrame raceFrame = new JFrame("Race in progress...");
     private ArrayList<JTextField> horseNameFields = new ArrayList<JTextField>();
     private ArrayList<JTextField> horseSymbolFields = new ArrayList<JTextField>();
+    private ArrayList<JComboBox> horseEquipmentFields = new ArrayList<JComboBox>();
+    
     private int raceLengthInput = 0;
     private int horseCount = 0;
 
@@ -35,7 +37,7 @@ public class RaceMenu {
 
     public void openRaceMenuWindow() {
         menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        menuFrame.setSize(1000, 550);
+        menuFrame.setSize(1000, 700);
         menuFrame.setLayout(new BorderLayout());
 
         JPanel panel1 = new JPanel(new GridLayout(0, 2, 10, 10));
@@ -49,8 +51,12 @@ public class RaceMenu {
             }
 
             horseCount++;
+
             JTextField horseNameField = new JTextField(15);
             JTextField horseSymbolField = new JTextField(15);
+
+            String[] items = {"None", "Saddle", "Lighter horseshoes"};
+            JComboBox horseEquipmentField = new JComboBox(items);
 
             horseNameFields.add(horseNameField);
             horseSymbolFields.add(horseSymbolField);
@@ -59,6 +65,8 @@ public class RaceMenu {
             panel1.add(horseNameField);
             panel1.add(new JLabel("Horse #" + horseCount + " symbol: "));
             panel1.add(horseSymbolField);
+            panel1.add(new JLabel("Horse #" + horseCount + " equipment: "));
+            panel1.add(horseEquipmentField);
 
             panel1.revalidate();
             panel1.repaint();
