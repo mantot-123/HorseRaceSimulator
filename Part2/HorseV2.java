@@ -11,7 +11,7 @@ public class HorseV2
     private String id;
 
     // By default, the horse doesn't have any equipment, so there is no amplification
-    private Equipment equipment = new Equipment("None", 0, 0);
+    private Equipment equipment = new Equipment(null, "None", 0, 0);
     private String name;
     private char symbol;
     private int distanceTravelled = 0;
