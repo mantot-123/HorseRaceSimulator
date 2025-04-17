@@ -25,8 +25,7 @@ public class Horse
         this.symbol = horseSymbol;
         this.confidenceRating = horseConfidence;
     }
-    
-    
+      
     //Other methods of class Horse
     public void fall()
     {
@@ -37,6 +36,10 @@ public class Horse
         if (this.confidenceRating > 0.1) {
             setConfidence(this.confidenceRating - 0.1);
         }
+    }
+
+    public void win() {
+        setConfidence(this.confidenceRating + 0.1);
     }
     
     public double getConfidence()

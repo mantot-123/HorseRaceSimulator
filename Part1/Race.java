@@ -111,7 +111,8 @@ public class Race
 
             //if any of the three horses has won the race is finished
             if ( raceWonBy(lane1Horse) || raceWonBy(lane2Horse) || raceWonBy(lane3Horse) )
-            {
+            {  
+                printRace();
                 System.out.println("Winner of the race: " + winningHorse.getName());
                 finished = true;
             }
@@ -169,6 +170,7 @@ public class Race
         // checks if the horse has raced the full distance + is not down + there is not already a winner determined yet
         if (theHorse.getDistanceTravelled() == raceLength && !theHorse.hasFallen() && this.winningHorse == null)
         {
+            theHorse.win();
             this.winningHorse = theHorse;
             return true;
         }
