@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Vector;
 import javax.management.openmbean.OpenDataException;
 import javax.swing.*;
 import java.awt.*;
@@ -55,9 +56,8 @@ public class RaceMenu {
             JTextField horseNameField = new JTextField(15);
             JTextField horseSymbolField = new JTextField(15);
 
-            Equipment[] equipmentChoices = {new Equipment("None", 0, 0),
-                                            new Equipment("Blinkers", 0, 3),
-                                            new Equipment("Lighter horseshoes", 2, 0)};
+            EquipmentFile equipmentFile = new EquipmentFile();
+            Vector<Equipment> equipmentChoices = new Vector<Equipment>(equipmentFile.getEquipmentList().values());
 
             JComboBox<Equipment> horseEquipmentField = new JComboBox<Equipment>(equipmentChoices);
 

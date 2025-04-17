@@ -1,12 +1,18 @@
 public class Equipment {
+    private String id;
     private String name;
     private int movementAmp;
     private int stabilityAmp;
 
-    public Equipment(String name, int movementAmp, int stabilityAmp) {
+    public Equipment(String id, String name, int movementAmp, int stabilityAmp) {
+        this.id = id;
         this.name = name;
         this.movementAmp = movementAmp;
         this.stabilityAmp = stabilityAmp;
+    }
+
+    public String getId() {
+        return this.id;
     }
 
     public int getMovementAmp() {

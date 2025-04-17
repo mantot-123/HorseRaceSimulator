@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class HorsesListFile {
-    ArrayList<HorseV2> loadedHorses = new ArrayList<HorseV2>();
+    private ArrayList<HorseV2> loadedHorses = new ArrayList<HorseV2>();
 
     public HorsesListFile() {
         loadHorses();
@@ -17,7 +17,8 @@ public class HorsesListFile {
             String name = horse.getName();
             char symbol = horse.getSymbol();
             double confidence = horse.getConfidence();
-            writer.println(id + "," + name + "," + symbol + "," + confidence);
+            Equipment equipment = horse.getEquipment();
+            writer.println(id + "," + name + "," + symbol + "," + confidence + "," + equipment.getId());
             writer.close();
         } catch(IOException e) {
             System.out.println("ERROR: An error has occurred while writing to the file " + FILENAME);
@@ -49,7 +50,7 @@ public class HorsesListFile {
 
     // Updates the horses list with the new contents in the horses list file
     public void loadHorses() {
-        final int NO_OF_COLUMNS = 4;
+        final int NO_OF_COLUMNS = 5;
         final String FILENAME = "Horses.csv";
 
         try(BufferedReader reader = new BufferedReader(new FileReader(FILENAME))) {
@@ -62,12 +63,16 @@ public class HorsesListFile {
                     String name = horseData[1];
                     char symbol = horseData[2].charAt(0);
                     double confidence = Double.parseDouble(horseData[3]);
+                    String eqId = horseData[4];
+
+                    EquipmentFile eqFile = new EquipmentFile();
+                    Equipment equipment = eqFile.getEquipmentList().get(eqId);
 
                     if(horseData[2].length() > 1) {
                         throw new IllegalArgumentException("Symbol must be a single character. Found a non single character: " + horseData[1]);
                     }
 
-                    HorseV2 newHorse = new HorseV2(id, symbol, name, confidence);
+                    HorseV2 newHorse = new HorseV2(id, symbol, name, confidence, equipment);
                     this.loadedHorses.add(newHorse);
                 } else {
                     throw new IOException("Invalid data format in line " + line + " of the CSV file");
