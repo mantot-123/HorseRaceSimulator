@@ -141,6 +141,9 @@ public class RaceGUI {
             horse.resetFallen();
         }
 
+        ElapsedTime elapsedTime = new ElapsedTime();
+
+        elapsedTime.start();
         Timer timer = new Timer(100, e -> {
             // Loop until a horse wins or all horses fall
             for(HorseV2 horse: this.laneHorses) {
@@ -153,7 +156,9 @@ public class RaceGUI {
 
             for(HorseV2 horse: this.laneHorses) {
                 if(raceWonBy(horse)) {
-                    JOptionPane.showMessageDialog(null, "The winner is: " + horse.getName());
+                    elapsedTime.finish();
+                    double elapsedTimeSeconds = elapsedTime.getElapsedTime();
+                    JOptionPane.showMessageDialog(null, "The winner is: " + horse.getName() + "\nElapsed time: " + String.format("%.2f", elapsedTimeSeconds) + " seconds.");
                     HorsesListFile horsesFile = new HorsesListFile();
                     horsesFile.saveMultipleHorses(laneHorses, false);
                     ((Timer)e.getSource()).stop(); // Stops the timer
@@ -161,7 +166,9 @@ public class RaceGUI {
             }
 
             if(this.allHorsesFallen()) {
-                JOptionPane.showMessageDialog(null, "All horses have fallen. There is NO WINNER.");
+                elapsedTime.finish();
+                double elapsedTimeSeconds = elapsedTime.getElapsedTime();
+                JOptionPane.showMessageDialog(null, "All horses have fallen. There is NO WINNER.\nElapsed time: " + String.format("%.2f", elapsedTimeSeconds) + " seconds.");
                 HorsesListFile horsesFile = new HorsesListFile();
                 horsesFile.saveMultipleHorses(laneHorses, false);
                 ((Timer)e.getSource()).stop();
