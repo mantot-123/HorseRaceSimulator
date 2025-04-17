@@ -55,8 +55,10 @@ public class RaceMenu {
             JTextField horseNameField = new JTextField(15);
             JTextField horseSymbolField = new JTextField(15);
 
-            String[] items = {"None", "Saddle", "Lighter horseshoes"};
-            JComboBox horseEquipmentField = new JComboBox(items);
+            Equipment[] equipmentChoices = {new Equipment("Blinkers", 0, 5),
+                                            new Equipment("Lighter horseshoes", 3, 0)};
+
+            JComboBox horseEquipmentField = new JComboBox(equipmentChoices);
 
             horseNameFields.add(horseNameField);
             horseSymbolFields.add(horseSymbolField);

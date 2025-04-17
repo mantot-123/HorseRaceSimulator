@@ -9,7 +9,7 @@ public class HorseV2
 {
     //Fields of class Horse
     private String id;
-    private String equipment;
+    private Equipment equipment;
     private String name;
     private char symbol;
     private int distanceTravelled = 0;
@@ -36,6 +36,24 @@ public class HorseV2
         this.name = horseName;
         this.symbol = horseSymbol;
         this.confidenceRating = horseConfidence;
+    }
+
+    public HorseV2(char horseSymbol, String horseName, double horseConfidence, Equipment equipment)
+    {
+        this.name = horseName;
+        this.symbol = horseSymbol;
+        this.confidenceRating = horseConfidence;
+        this.equipment = equipment;
+    }
+
+    // Override = You can add an optional ID to your horse
+    public HorseV2(String id, char horseSymbol, String horseName, double horseConfidence, Equipment equipment)
+    {
+        this.id = id;
+        this.name = horseName;
+        this.symbol = horseSymbol;
+        this.confidenceRating = horseConfidence;
+        this.equipment = equipment;
     }
     
     
@@ -88,7 +106,7 @@ public class HorseV2
         return this.symbol;
     }
     
-    public String getEquipment() {
+    public Equipment getEquipment() {
         return this.equipment;
     }
 
