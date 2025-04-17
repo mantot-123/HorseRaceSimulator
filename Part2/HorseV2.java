@@ -3,13 +3,15 @@
  * Stores attributes and all related getter and setter methods about a horse
  * 
  * @author Emman Ruiz Cunanan Medina
- * @version v1.0
+ * @version v2.0
  */
 public class HorseV2
 {
     //Fields of class Horse
     private String id;
-    private Equipment equipment;
+
+    // By default, the horse doesn't have any equipment, so there is no amplification
+    private Equipment equipment = new Equipment("None", 0, 0);
     private String name;
     private char symbol;
     private int distanceTravelled = 0;

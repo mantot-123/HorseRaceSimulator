@@ -9,7 +9,7 @@ public class RaceMenu {
     private JFrame raceFrame = new JFrame("Race in progress...");
     private ArrayList<JTextField> horseNameFields = new ArrayList<JTextField>();
     private ArrayList<JTextField> horseSymbolFields = new ArrayList<JTextField>();
-    private ArrayList<JComboBox> horseEquipmentFields = new ArrayList<JComboBox>();
+    private ArrayList<JComboBox<Equipment>> horseEquipmentFields = new ArrayList<JComboBox<Equipment>>();
     
     private int raceLengthInput = 0;
     private int horseCount = 0;
@@ -55,13 +55,15 @@ public class RaceMenu {
             JTextField horseNameField = new JTextField(15);
             JTextField horseSymbolField = new JTextField(15);
 
-            Equipment[] equipmentChoices = {new Equipment("Blinkers", 0, 5),
-                                            new Equipment("Lighter horseshoes", 3, 0)};
+            Equipment[] equipmentChoices = {new Equipment("None", 0, 0),
+                                            new Equipment("Blinkers", 0, 3),
+                                            new Equipment("Lighter horseshoes", 2, 0)};
 
-            JComboBox horseEquipmentField = new JComboBox(equipmentChoices);
+            JComboBox<Equipment> horseEquipmentField = new JComboBox<Equipment>(equipmentChoices);
 
             horseNameFields.add(horseNameField);
             horseSymbolFields.add(horseSymbolField);
+            horseEquipmentFields.add(horseEquipmentField);
 
             panel1.add(new JLabel("Horse #" + horseCount + " name: "));
             panel1.add(horseNameField);
@@ -140,8 +142,9 @@ public class RaceMenu {
         for(int i = 0; i < horseNameFields.size(); i++) {
             String horseName = this.horseNameFields.get(i).getText();
             char horseSymbol = this.horseSymbolFields.get(i).getText().charAt(0);
+            Equipment horseEquipment = (Equipment)this.horseEquipmentFields.get(i).getSelectedItem();
             double initialConfidence = 0.5; // Starting confidence rating
-            HorseV2 newHorse = new HorseV2(horseSymbol, horseName, initialConfidence);
+            HorseV2 newHorse = new HorseV2(horseSymbol, horseName, initialConfidence, horseEquipment);
             this.race.addHorse(newHorse);
         }
 
