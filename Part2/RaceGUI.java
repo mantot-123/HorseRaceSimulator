@@ -20,7 +20,6 @@ public class RaceGUI {
     };
 
     JComboBox<TrackType> trackComboBox  = new JComboBox<TrackType>(trackTypes);
-
     ArrayList<JTextField> horseLaneLabels = new ArrayList<JTextField>();
     ArrayList<JLabel> topPanelHorseLabels = new ArrayList<JLabel>();
 

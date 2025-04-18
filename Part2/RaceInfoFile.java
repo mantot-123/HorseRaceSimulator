@@ -1,14 +1,13 @@
 import java.io.*;
 public class RaceInfoFile {
-    private int raceLength;
     private RaceInfo race = new RaceInfo(0);
 
     public RaceInfoFile() {
         loadRaceInfo();
     }
 
-    public int getRaceLength() {
-        return this.raceLength;
+    public RaceInfo getRace() {
+        return this.race;
     }
 
     public void loadRaceInfo() {

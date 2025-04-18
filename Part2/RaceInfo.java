@@ -2,6 +2,7 @@ public class RaceInfo {
     private int raceLength = 0;
     private TrackType trackType;
 
+    // Constructor
     public RaceInfo(int chosenRaceLength) {
         this.raceLength = chosenRaceLength;
     }
