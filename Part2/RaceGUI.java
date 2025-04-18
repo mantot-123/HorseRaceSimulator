@@ -6,18 +6,34 @@ import javax.swing.*;
 public class RaceGUI {
     JFrame frame = new JFrame("Ongoing race...");
 
-    JPanel topPanel = new JPanel(new GridLayout(0, 1));
+    JPanel topPanel = new JPanel(new GridLayout(0, 2));
+    JPanel subPanel1 = new JPanel(new GridLayout(0, 1));
+    JPanel subPanel2 = new JPanel(new  GridLayout(1, 2));
+
     JPanel horseLanePanel = new JPanel(new GridLayout(0, 1, 10, 10));
     JPanel optionsPanel = new JPanel(new GridLayout(1, 0, 10, 10));
+    
+    TrackType[] trackTypes = {
+                        new TrackType("Turf (Grass)", 0.1, 0.1), 
+                        new TrackType("Icy", 0.25, 0.2),
+                        new TrackType("Sand", 0.05, 0.15)
+    };
+
+    JComboBox<TrackType> trackComboBox  = new JComboBox<TrackType>(trackTypes);
 
     ArrayList<JTextField> horseLaneLabels = new ArrayList<JTextField>();
-    ArrayList<JLabel> topPanelLabels = new ArrayList<JLabel>();
+    ArrayList<JLabel> topPanelHorseLabels = new ArrayList<JLabel>();
 
+    private TrackType track;
     private int raceLength;
     private ArrayList<HorseV2> laneHorses = new ArrayList<HorseV2>();
     private HorseV2 winningHorse;
 
     public RaceGUI(int raceLength) {
+        if(raceLength < 10) {
+            throw new IllegalArgumentException("ERROR: Please enter a valid race length. It must be a whole number, and it has to be at least 10 blocks long.");
+        }
+
         this.raceLength = raceLength;
     }
 
@@ -74,10 +90,24 @@ public class RaceGUI {
     public void addHorseToTopPanel(HorseV2 horse) {
         JLabel horseLabel = new JLabel(horse.getName() + " (Current confidence: " + (horse.getConfidence()*100) + "%)");
         horseLabel.setFont(new Font("Arial", Font.BOLD, 14));
-        topPanel.add(horseLabel);
-        topPanelLabels.add(horseLabel);
+        subPanel1.add(horseLabel);
+        topPanelHorseLabels.add(horseLabel);
         frame.revalidate();
         frame.repaint();
+    }
+
+    // Loads the track options panel
+    public void loadTrackSettingsPanel() {
+        JLabel label1 = new JLabel("Track type:");
+        subPanel2.add(label1);
+        subPanel2.add(trackComboBox);
+        frame.revalidate();
+        frame.repaint();
+    }
+
+    public void loadTopPanel() {
+        topPanel.add(subPanel1);
+        topPanel.add(subPanel2);
     }
 
     // Creates a JLabel object to show a lane horse + adds it to the lane panel
@@ -97,8 +127,9 @@ public class RaceGUI {
         JButton openPastBetsBtn = new JButton("Open previous bets");
         JButton openStatsBtn = new JButton("Statistics");
         startRaceBtn.addActionListener(e -> {
+            this.track = (TrackType)trackComboBox.getSelectedItem();
             resetWinner();
-            showRace();
+            simulateRace();
         });
 
         openBettingsBtn.addActionListener(e -> {
@@ -117,18 +148,22 @@ public class RaceGUI {
             addHorseToTopPanel(horse);
         }
 
+        loadTrackSettingsPanel();
+
         // Lane horses added
         for(HorseV2 horse: this.laneHorses) {
             addHorseToLanePanel(horse);
         }
 
+        loadTopPanel();
         loadOptionsPanel();
         loadRaceFrame();
     }
 
     // Simulates the horse race when called.
-    private void showRace() {
+    private void simulateRace() {
         // Temporary test code. This can be removed....
+        System.out.println("Track type: " + this.track.toString());
         for(HorseV2 horse: this.getLaneHorses()) {
             System.out.println("Horse ID: " + horse.getId() + ", name: " + horse.getName() + ", symbol: " + horse.getSymbol() + ", confidence: " + horse.getConfidence() + ", equipment: " + horse.getEquipment().toString());
         }
@@ -261,8 +296,9 @@ public class RaceGUI {
             //the probability that the horse will move forward depends on the confidence;
             if (Math.random() < theHorse.getConfidence())
             {
-                // When a horse moves, there is at least a 10% chance that the horse will move twice, so it moves faster
-                if(Math.random() < (0.1 + theHorse.getEquipment().getMovementAmp())) {
+                // When a horse moves, there is a chance that the horse will move twice as fast
+                // Based on the track conditions (fall and fast movement probability) and modifier values for the horse
+                if(Math.random() < (this.track.getBaseFastMoveProb() + theHorse.getEquipment().getMovementAmp())) {
                     for(int i = 1; i <= 2; i++)
                         theHorse.moveForward();
                 } else {
@@ -270,10 +306,10 @@ public class RaceGUI {
                 }
             }
             
-            //the probability that the horse will fall is very small (max is 0.1)
+            //the probability that the horse will fall is very small (max is base probability of the track)
             //but will also will depends exponentially on confidence 
             //so if you double the confidence, the probability that it will fall is *2
-            if (Math.random() < ((0.1 - theHorse.getEquipment().getStabilityAmp())*theHorse.getConfidence()*theHorse.getConfidence()))
+            if (Math.random() < ((this.track.getBaseFallProb() - theHorse.getEquipment().getStabilityAmp())*theHorse.getConfidence()*theHorse.getConfidence()))
             {
                 theHorse.fall();
             }
