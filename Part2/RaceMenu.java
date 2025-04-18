@@ -20,7 +20,7 @@ public class RaceMenu {
         RaceInfoFile raceInfoFile = new RaceInfoFile();
         if(horsesFile.getHorsesList().size() == 0 && raceInfoFile.getRaceLength() == 0) {
             openRaceMenuWindow();
-        } else if(horsesFile.getHorsesList().size() == 0 ^ raceInfoFile.getRaceLength() == 0) { // Check if one of the files have been corrupted, then if yes, clear all the saved progress
+        } else if(horsesFile.getHorsesList().size() == 0 ^ raceInfoFile.getRaceLength() == 0) { // Check if ONE of the files have been corrupted, then if yes, clear all the saved progress
             JOptionPane.showMessageDialog(null, "WARNING: One of your saved race and saved horses files has been corrupted.\nYour saved horses and race data have been cleared. You will have to create a new race again.", "Warning", JOptionPane.ERROR_MESSAGE);
             horsesFile.clearSavedHorses();
             raceInfoFile.clearRaceInfo();
@@ -158,7 +158,7 @@ public class RaceMenu {
         horsesFile.saveMultipleHorses(this.race.getLaneHorses(), false);
 
         RaceInfoFile raceInfoFile = new RaceInfoFile();
-        raceInfoFile.saveRaceInfo(raceLengthInput);
+        raceInfoFile.saveRaceInfo(this.race.getRaceInfo());
 
         this.confirmStartRace();
     }
