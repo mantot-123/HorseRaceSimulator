@@ -20,12 +20,10 @@ public class RaceGUI {
     };
 
     JComboBox<TrackType> trackComboBox  = new JComboBox<TrackType>(trackTypes);
-
     ArrayList<JTextField> horseLaneLabels = new ArrayList<JTextField>();
     ArrayList<JLabel> topPanelHorseLabels = new ArrayList<JLabel>();
 
-    private TrackType track;
-    private int raceLength;
+    private RaceInfo race;
     private ArrayList<HorseV2> laneHorses = new ArrayList<HorseV2>();
     private HorseV2 winningHorse;
 
@@ -34,13 +32,17 @@ public class RaceGUI {
             throw new IllegalArgumentException("ERROR: Please enter a valid race length. It must be a whole number, and it has to be at least 10 blocks long.");
         }
 
-        this.raceLength = raceLength;
+        this.race = new RaceInfo(raceLength);
     }
 
     // Override
     public RaceGUI(int raceLength, ArrayList<HorseV2> horses) {
-        this.raceLength = raceLength;
+        this.race = new RaceInfo(raceLength);
         this.laneHorses = horses;
+    }
+
+    public RaceInfo getRaceInfo() {
+        return this.race;
     }
 
     public ArrayList<HorseV2> getLaneHorses() {
@@ -75,7 +77,7 @@ public class RaceGUI {
         this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.frame.setLayout(new BorderLayout());
         // Adjusts the width of the frame based on the race track length
-        this.frame.setSize(58 * this.raceLength, 350);
+        this.frame.setSize(58 * this.race.getRaceLength(), 350);
         // Locks the size of the frame so it can't be resized
         this.frame.setResizable(false);
 
@@ -127,7 +129,7 @@ public class RaceGUI {
         JButton openPastBetsBtn = new JButton("Open previous bets");
         JButton openStatsBtn = new JButton("Statistics");
         startRaceBtn.addActionListener(e -> {
-            this.track = (TrackType)trackComboBox.getSelectedItem();
+            this.race.setTrackType((TrackType)trackComboBox.getSelectedItem());
             resetWinner();
             simulateRace();
         });
@@ -163,7 +165,7 @@ public class RaceGUI {
     // Simulates the horse race when called.
     private void simulateRace() {
         // Temporary test code. This can be removed....
-        System.out.println("Track type: " + this.track.toString());
+        System.out.println("Track type: " + this.race.getTrackType().toString());
         for(HorseV2 horse: this.getLaneHorses()) {
             System.out.println("Horse ID: " + horse.getId() + ", name: " + horse.getName() + ", symbol: " + horse.getSymbol() + ", confidence: " + horse.getConfidence() + ", equipment: " + horse.getEquipment().toString());
         }
@@ -225,7 +227,7 @@ public class RaceGUI {
     private boolean raceWonBy(HorseV2 theHorse)
     {
         // checks if the horse has raced the full distance + is not down + there is not already a winner determined yet
-        if (theHorse.getDistanceTravelled() >= raceLength && !theHorse.hasFallen() && this.winningHorse == null)
+        if (theHorse.getDistanceTravelled() >= this.race.getRaceLength() && !theHorse.hasFallen() && this.winningHorse == null)
         {
             this.winningHorse = theHorse;
             theHorse.win(); // Increase the horse's confidence rating
@@ -297,8 +299,8 @@ public class RaceGUI {
             if (Math.random() < theHorse.getConfidence())
             {
                 // When a horse moves, there is a chance that the horse will move twice as fast
-                // Based on the track conditions (fall and fast movement probability) and modifier values for the horse
-                if(Math.random() < (this.track.getBaseFastMoveProb() + theHorse.getEquipment().getMovementAmp())) {
+                // The chance is based on the track conditions and modifier values for the horse
+                if(Math.random() < (this.race.getTrackType().getBaseFastMoveProb() + theHorse.getEquipment().getMovementAmp())) {
                     for(int i = 1; i <= 2; i++)
                         theHorse.moveForward();
                 } else {
@@ -309,7 +311,9 @@ public class RaceGUI {
             //the probability that the horse will fall is very small (max is base probability of the track)
             //but will also will depends exponentially on confidence 
             //so if you double the confidence, the probability that it will fall is *2
-            if (Math.random() < ((this.track.getBaseFallProb() - theHorse.getEquipment().getStabilityAmp())*theHorse.getConfidence()*theHorse.getConfidence()))
+
+            // Probability is based on the track and the horse's modifier values
+            if (Math.random() < ((this.race.getTrackType().getBaseFallProb() - theHorse.getEquipment().getStabilityAmp())*theHorse.getConfidence()*theHorse.getConfidence()))
             {
                 theHorse.fall();
             }

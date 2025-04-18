@@ -1,22 +1,22 @@
 import java.io.*;
 public class RaceInfoFile {
-    private int raceLength;
-    
+    private RaceInfo race = new RaceInfo(0);
+
     public RaceInfoFile() {
         loadRaceInfo();
     }
 
-    public int getRaceLength() {
-        return this.raceLength;
+    public RaceInfo getRace() {
+        return this.race;
     }
 
     public void loadRaceInfo() {
-        final String FILENAME = "RaceInfo.txt";
+        final String FILENAME = "Race.txt";
         try(BufferedReader reader = new BufferedReader(new FileReader(FILENAME))) {
             String line = reader.readLine();
             if(line != null && !line.isEmpty()) {
                 int readRaceLength = Integer.parseInt(line);
-                this.raceLength = readRaceLength;
+                this.race.setRaceLength(readRaceLength);
             }
         } catch(IllegalArgumentException e) {
             System.out.println("ERROR: An error occurred while reading from the file " + FILENAME + ". The contents of the file might have been corrupted.");
@@ -32,10 +32,10 @@ public class RaceInfoFile {
         }
     }
 
-    public void saveRaceInfo(int raceLengthToAdd) {
-        final String FILENAME = "RaceInfo.txt";
+    public void saveRaceInfo(RaceInfo raceToSave) {
+        final String FILENAME = "Race.txt";
         try(PrintWriter writer = new PrintWriter(new FileOutputStream(FILENAME))) {
-            writer.println(raceLengthToAdd);
+            writer.println(raceToSave.getRaceLength());
             writer.close();
         } catch (IOException e) {
             System.out.println("ERROR: An error has occurred while writing to the file " + FILENAME + ". Possible that the file does not exist or is renamed?");
@@ -45,7 +45,7 @@ public class RaceInfoFile {
 
 
     public void clearRaceInfo() {
-        final String FILENAME = "RaceInfo.txt";
+        final String FILENAME = "Race.txt";
         try(PrintWriter writer = new PrintWriter(new FileOutputStream(FILENAME))) {
             writer.println("");
             writer.close();

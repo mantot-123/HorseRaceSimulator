@@ -36,9 +36,9 @@ public class EquipmentFile {
 
         } catch(IllegalArgumentException  e) {
             if(e.getMessage() != null) {
-                System.out.println("ERROR: An error has occurred while reading the file " + FILENAME + ". The contents of the file might have been corrupted. Possible that the amplification values are not integers?");
-            } else {
                 System.out.println("ERROR: " + e.getMessage());
+            } else {
+                System.out.println("ERROR: An error has occurred while reading the file " + FILENAME + ". The contents of the file might have been corrupted. Possible that the amplification values are not integers?");
             }
             e.printStackTrace();
 

@@ -31,7 +31,7 @@ public class HorseV2
         this.confidenceRating = horseConfidence;
     }
 
-    // Override = You can add an optional ID to your horse
+    // Overloading = You can add an optional ID to your horse
     public HorseV2(String id, char horseSymbol, String horseName, double horseConfidence)
     {
         this.id = id;
@@ -48,7 +48,7 @@ public class HorseV2
         this.equipment = equipment;
     }
 
-    // Override = You can add an optional ID to your horse
+    // Overloading = You can add an optional ID to your horse
     public HorseV2(String id, char horseSymbol, String horseName, double horseConfidence, Equipment equipment)
     {
         this.id = id;
