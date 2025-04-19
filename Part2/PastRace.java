@@ -2,17 +2,17 @@ import java.time.LocalDate;
 
 public class PastRace extends RaceInfo {
     private HorseV2 winningHorse;
-    private long elapsedTime; // measured in seconds
+    private double elapsedTime; // measured in seconds
     private String dateCompleted;
 
-    public PastRace(int raceLength, HorseV2 winningHorse, long elapsedTime) {
+    public PastRace(int raceLength, HorseV2 winningHorse, double elapsedTime) {
         super(raceLength);
         this.winningHorse = winningHorse;
         this.elapsedTime = elapsedTime;
         this.dateCompleted = LocalDate.now().toString(); // Get the date when the object was created
     }
 
-    public PastRace(int raceLength, HorseV2 winningHorse, long elapsedTime, String dateCompleted) {
+    public PastRace(int raceLength, HorseV2 winningHorse, double elapsedTime, String dateCompleted) {
         super(raceLength);
         this.winningHorse = winningHorse;
         this.elapsedTime = elapsedTime;
@@ -23,7 +23,7 @@ public class PastRace extends RaceInfo {
         return this.winningHorse;
     }
 
-    public long getElapsedTime() {
+    public double getElapsedTime() {
         return this.elapsedTime;
     }
 

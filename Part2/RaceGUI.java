@@ -198,6 +198,12 @@ public class RaceGUI {
                     JOptionPane.showMessageDialog(null, "The winner is: " + horse.getName() + "\nElapsed time: " + String.format("%.2f", elapsedTimeSeconds) + " seconds.");
                     HorsesListFile horsesFile = new HorsesListFile();
                     horsesFile.saveMultipleHorses(laneHorses, false);
+
+                    PastRacesFile pastRacesFile = new PastRacesFile();
+
+                    PastRace pastRace = new PastRace(this.race.getRaceLength(), this.winningHorse, elapsedTimeSeconds);
+                    pastRace.setTrackType(this.race.getTrackType());
+                    pastRacesFile.savePastRace(pastRace);
                     ((Timer)e.getSource()).stop(); // Stops the timer
                 }
             }
@@ -208,6 +214,12 @@ public class RaceGUI {
                 JOptionPane.showMessageDialog(null, "All horses have fallen. There is NO WINNER.\nElapsed time: " + String.format("%.2f", elapsedTimeSeconds) + " seconds.");
                 HorsesListFile horsesFile = new HorsesListFile();
                 horsesFile.saveMultipleHorses(laneHorses, false);
+
+                PastRacesFile pastRacesFile = new PastRacesFile();
+            
+                PastRace pastRace = new PastRace(this.race.getRaceLength(), this.winningHorse, elapsedTimeSeconds);
+                pastRace.setTrackType(this.race.getTrackType());
+                pastRacesFile.savePastRace(pastRace);
                 ((Timer)e.getSource()).stop();
             }
 

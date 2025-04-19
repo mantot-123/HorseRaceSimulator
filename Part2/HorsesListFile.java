@@ -13,7 +13,7 @@ public class HorsesListFile {
         final String FILENAME = "Horses.csv";
 
         try(PrintWriter writer = new PrintWriter(new FileOutputStream(FILENAME, append))) {
-            String id = Helpers.randomString(ID_SIZE);
+            String id = horse.getId();
             String name = horse.getName();
             char symbol = horse.getSymbol();
             double confidence = horse.getConfidence();
@@ -75,7 +75,7 @@ public class HorsesListFile {
                     HorseV2 newHorse = new HorseV2(id, symbol, name, confidence, equipment);
                     this.loadedHorses.add(newHorse);
                 } else {
-                    throw new IOException("Invalid data format in line " + line + " of the CSV file");
+                    throw new IllegalArgumentException("Invalid data format in line " + line + " of the CSV file");
                 }
                 line = reader.readLine();
             }
@@ -97,6 +97,15 @@ public class HorsesListFile {
             }
             e.printStackTrace();
         }
+    }
+
+    public HorseV2 searchById(String id) {
+        for(HorseV2 h: this.loadedHorses) {
+            if(h.getId().equals(id)) {
+                return h;
+            }
+        }
+        return null;
     }
 
     public ArrayList<HorseV2> getHorsesList() {
