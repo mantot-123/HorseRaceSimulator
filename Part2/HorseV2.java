@@ -42,6 +42,7 @@ public class HorseV2
 
     public HorseV2(char horseSymbol, String horseName, double horseConfidence, Equipment equipment)
     {
+        this.id = Helpers.randomString(10);
         this.name = horseName;
         this.symbol = horseSymbol;
         this.confidenceRating = horseConfidence;
