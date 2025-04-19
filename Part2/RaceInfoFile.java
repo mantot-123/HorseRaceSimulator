@@ -1,6 +1,7 @@
 import java.io.*;
 public class RaceInfoFile {
     private RaceInfo race = new RaceInfo(0);
+    private final String FILENAME = "Race.txt";
 
     public RaceInfoFile() {
         loadRaceInfo();
@@ -11,7 +12,6 @@ public class RaceInfoFile {
     }
 
     public void loadRaceInfo() {
-        final String FILENAME = "Race.txt";
         try(BufferedReader reader = new BufferedReader(new FileReader(FILENAME))) {
             String line = reader.readLine();
             if(line != null && !line.isEmpty()) {
@@ -33,7 +33,6 @@ public class RaceInfoFile {
     }
 
     public void saveRaceInfo(RaceInfo raceToSave) {
-        final String FILENAME = "Race.txt";
         try(PrintWriter writer = new PrintWriter(new FileOutputStream(FILENAME))) {
             writer.println(raceToSave.getRaceLength());
             writer.close();
@@ -45,7 +44,6 @@ public class RaceInfoFile {
 
 
     public void clearRaceInfo() {
-        final String FILENAME = "Race.txt";
         try(PrintWriter writer = new PrintWriter(new FileOutputStream(FILENAME))) {
             writer.println("");
             writer.close();

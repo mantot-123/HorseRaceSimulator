@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 public class EquipmentFile {
     private HashMap<String, Equipment> equipmentList = new HashMap<String, Equipment>();
+    private final String FILENAME = "EquipmentList.csv";
 
     public EquipmentFile() {
         loadEquipment();
@@ -12,7 +13,6 @@ public class EquipmentFile {
     // Updates the equipment with the new contents in the horses list file
     public void loadEquipment() {
         final int NO_OF_COLUMNS = 4;
-        final String FILENAME = "EquipmentList.csv";
 
         try(BufferedReader reader = new BufferedReader(new FileReader(FILENAME))) {
             equipmentList.clear();
@@ -28,7 +28,7 @@ public class EquipmentFile {
                     Equipment eq = new Equipment(id, name, movementAmp, stabilityAmp);
                     this.equipmentList.put(id, eq);
                 } else {
-                    throw new IOException("Invalid data format in line '" + line + "' of the CSV file");
+                    throw new IllegalArgumentException("Invalid data format in line '" + line + "' of the CSV file");
                 }
                 line = reader.readLine();
             }

@@ -12,6 +12,9 @@ public class RaceInfo {
     }
 
     public void setTrackType(TrackType newTrackType) {
+        if(newTrackType == null) {
+            throw new IllegalArgumentException("ERROR: Track type must not be 'null'.");
+        }
         this.trackType = newTrackType;
     }
 
