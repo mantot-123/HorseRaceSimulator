@@ -24,7 +24,9 @@ public class PastRacesListDisplay {
         }
 
         this.pastRacesListDisplay.setListData(pastRacesArr);
-        this.panel1.add(this.pastRacesListDisplay);
+        // this.panel1.add(this.pastRacesListDisplay);
+
+        this.panel1.add(scrollPane);
     }
 
     public void loadOptionsPanel() {
