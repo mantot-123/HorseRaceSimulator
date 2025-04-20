@@ -22,12 +22,19 @@ public class PastRacesFile {
                     String trackName = data[1];
                     double trackBaseFallProb = Double.parseDouble(data[2]);
                     double trackBaseFastMoveProb = Double.parseDouble(data[3]);
+                    String horseId = data[4];
 
                     TrackType track = new TrackType(trackName, trackBaseFallProb, trackBaseFastMoveProb);
-                    HorseV2 winningHorse = horsesFile.searchById(data[4]);
-                    // If the winning horse is not found, load the race data, but leave the horse unknown
-                    if(winningHorse == null) {
-                        winningHorse = new HorseV2("0000000000", '-', "Unknown horse", 0.0); 
+
+                    HorseV2 winningHorse;
+                    if(horseId.equals(SpecialHorses.NO_WINNER.getId())) { // Checks if the winning horse's ID mathes the "NOWINNER" placeholder horse's ID
+                        winningHorse = SpecialHorses.NO_WINNER;
+                    } else {
+                        // If the winning horse is not found in the saved horses file, load the race data, but leave the horse unknown
+                        winningHorse = horsesFile.searchById(horseId);
+                        if(winningHorse == null) {
+                            winningHorse = SpecialHorses.UNKNOWN_HORSE; 
+                        }
                     }
 
                     double elapsedTime = Double.parseDouble(data[5]);

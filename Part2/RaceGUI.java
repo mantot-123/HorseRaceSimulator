@@ -222,7 +222,8 @@ public class RaceGUI {
 
                 PastRacesFile pastRacesFile = new PastRacesFile();
             
-                PastRace pastRace = new PastRace(this.race.getRaceLength(), this.winningHorse, elapsedTimeSeconds);
+                PastRace pastRace = new PastRace(this.race.getRaceLength(), null, elapsedTimeSeconds);
+
                 pastRace.setTrackType(this.race.getTrackType());
                 pastRacesFile.savePastRace(pastRace);
                 ((Timer)e.getSource()).stop();
