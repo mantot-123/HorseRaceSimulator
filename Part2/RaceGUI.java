@@ -126,7 +126,7 @@ public class RaceGUI {
     public void loadOptionsPanel() {
         JButton startRaceBtn = new JButton("Start race");
         JButton openBettingsBtn = new JButton("Open bettings");
-        JButton openPastBetsBtn = new JButton("Open previous bets");
+        JButton openPastRacesBtn = new JButton("Open past races");
         JButton openStatsBtn = new JButton("Statistics");
         startRaceBtn.addActionListener(e -> {
             this.race.setTrackType((TrackType)trackComboBox.getSelectedItem());
@@ -138,9 +138,14 @@ public class RaceGUI {
             ViewBets viewBets = new ViewBets();
         });
 
+        openPastRacesBtn.addActionListener(e -> {
+            PastRacesListDisplay pastRacesDisplay = new PastRacesListDisplay();
+        });
+
+
         optionsPanel.add(startRaceBtn);
         optionsPanel.add(openBettingsBtn);
-        optionsPanel.add(openPastBetsBtn);
+        optionsPanel.add(openPastRacesBtn);
         optionsPanel.add(openStatsBtn);
     }
 
