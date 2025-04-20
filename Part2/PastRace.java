@@ -7,14 +7,27 @@ public class PastRace extends RaceInfo {
 
     public PastRace(int raceLength, HorseV2 winningHorse, double elapsedTime) {
         super(raceLength);
-        this.winningHorse = winningHorse;
+
+        // If no winning horse is specified (it's null), then add a dummy horse showing "No winner"
+        if(winningHorse != null) {
+            this.winningHorse = winningHorse;
+        } else {
+            this.winningHorse = SpecialHorses.NO_WINNER;
+        }
+
         this.elapsedTime = elapsedTime;
         this.dateCompleted = LocalDate.now().toString(); // Get the date when the object was created
     }
 
     public PastRace(int raceLength, HorseV2 winningHorse, double elapsedTime, String dateCompleted) {
         super(raceLength);
-        this.winningHorse = winningHorse;
+
+        if(winningHorse != null) {
+            this.winningHorse = winningHorse;
+        } else {
+            this.winningHorse = SpecialHorses.NO_WINNER;
+        }
+
         this.elapsedTime = elapsedTime;
         this.dateCompleted = dateCompleted;
     }
