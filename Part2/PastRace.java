@@ -30,4 +30,9 @@ public class PastRace extends RaceInfo {
     public String getDateCompleted() {
         return this.dateCompleted;
     }
+
+    @Override
+    public String toString() {
+        return "Track: " + this.getTrackType() + ", Winning horse: " + this.winningHorse.getName() + ", Elapsed time: " + this.elapsedTime + "s, Date completed: " + this.dateCompleted;
+    }
 }
