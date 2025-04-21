@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.io.*;
 public class PastRacesFile {
     private ArrayList<PastRace> pastRaces = new ArrayList<PastRace>();
@@ -7,6 +8,7 @@ public class PastRacesFile {
 
     public PastRacesFile() {
         loadPastRaces();
+        Collections.reverse(pastRaces); // Reverse the list so the latest race results are shown first
     }
 
     public void loadPastRaces() {
@@ -49,6 +51,7 @@ public class PastRacesFile {
 
                 line = reader.readLine();
             }
+
         } catch(IllegalArgumentException e) {
             if(e.getMessage() != null) {
                 System.out.println("ERROR: " + e.getMessage());
