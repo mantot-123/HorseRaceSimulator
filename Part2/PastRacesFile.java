@@ -4,7 +4,7 @@ import java.io.*;
 public class PastRacesFile {
     private ArrayList<PastRace> pastRaces = new ArrayList<PastRace>();
     private final String FILENAME = "PastRaces.csv";
-    private final int NO_OF_COLUMNS = 7;
+    private final int NO_OF_COLUMNS = 5;
 
     public PastRacesFile() {
         loadPastRaces();
@@ -14,6 +14,7 @@ public class PastRacesFile {
     public void loadPastRaces() {
         try(BufferedReader reader = new BufferedReader(new FileReader(FILENAME))) {
             HorsesListFile horsesFile = new HorsesListFile();
+            TrackTypesFile tracksFile = new TrackTypesFile();
             String line = reader.readLine();
             while(line != null && !line.isEmpty()) {
                 // TODO EXTRACT PAST RACE DATA HERE
@@ -21,12 +22,12 @@ public class PastRacesFile {
 
                 if(data.length == NO_OF_COLUMNS) {
                     int raceLength = Integer.parseInt(data[0]);
-                    String trackName = data[1];
-                    double trackBaseFallProb = Double.parseDouble(data[2]);
-                    double trackBaseFastMoveProb = Double.parseDouble(data[3]);
-                    String horseId = data[4];
+                    String trackId = data[1];
+                    // double trackBaseFallProb = Double.parseDouble(data[2]);
+                    // double trackBaseFastMoveProb = Double.parseDouble(data[3]);
+                    String horseId = data[2];
 
-                    TrackType track = new TrackType(trackName, trackBaseFallProb, trackBaseFastMoveProb);
+                    TrackType track = tracksFile.getTrackTypeById(trackId);
 
                     HorseV2 winningHorse;
                     if(horseId.equals(SpecialHorses.NO_WINNER.getId())) { // Checks if the winning horse's ID mathes the "NOWINNER" placeholder horse's ID
@@ -39,8 +40,8 @@ public class PastRacesFile {
                         }
                     }
 
-                    double elapsedTime = Double.parseDouble(data[5]);
-                    String dateCompleted = data[6];
+                    double elapsedTime = Double.parseDouble(data[3]);
+                    String dateCompleted = data[4];
 
                     PastRace pastRace = new PastRace(raceLength, winningHorse, elapsedTime, dateCompleted);
                     pastRace.setTrackType(track);
@@ -74,14 +75,12 @@ public class PastRacesFile {
         // TODO SAVE PAST RACE DATA HERE
         try(PrintWriter writer = new PrintWriter(new FileOutputStream(FILENAME, true))) {
             int raceLength = pastRace.getRaceLength();
-            String trackName = pastRace.getTrackType().toString();
-            double trackBaseFallProb = pastRace.getTrackType().getBaseFallProb();
-            double trackBaseFastMoveProb = pastRace.getTrackType().getBaseFastMoveProb();
+            String trackId = pastRace.getTrackType().getId();
             String winningHorseId = pastRace.getWinningHorse().getId();
             double elapsedTime = pastRace.getElapsedTime();
             String dateCompleted = pastRace.getDateCompleted();
 
-            writer.println(raceLength + "," + trackName + "," + trackBaseFallProb + "," + trackBaseFastMoveProb + "," + winningHorseId + "," + elapsedTime + "," + dateCompleted);
+            writer.println(raceLength + "," + trackId + "," + winningHorseId + "," + elapsedTime + "," + dateCompleted);
             writer.close();
         } catch(IOException e) {
             System.out.println("ERROR: An error occurred while writing to the file " + FILENAME + ". Possible that the file does not exist for is renamed?");
