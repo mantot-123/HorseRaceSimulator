@@ -1,6 +1,6 @@
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
+import java.util.Vector;
 import javax.swing.*;
 
 public class RaceGUI {
@@ -13,11 +13,8 @@ public class RaceGUI {
     JPanel horseLanePanel = new JPanel(new GridLayout(0, 1, 10, 10));
     JPanel optionsPanel = new JPanel(new GridLayout(1, 0, 10, 10));
     
-    TrackType[] trackTypes = {
-                        new TrackType("Turf (Grass)", 0.1, 0.1), 
-                        new TrackType("Icy", 0.25, 0.2),
-                        new TrackType("Sand", 0.05, 0.15)
-    };
+    TrackTypesFile trackTypesFile = new TrackTypesFile();
+    Vector<TrackType> trackTypes = new Vector<TrackType>(trackTypesFile.getTrackTypes().values());
 
     JComboBox<TrackType> trackComboBox  = new JComboBox<TrackType>(trackTypes);
     ArrayList<JTextField> horseLaneLabels = new ArrayList<JTextField>();
