@@ -174,10 +174,11 @@ public class RaceGUI {
 
         boolean finished = false;
 
-        // Puts all the horses back to their starting position + resets their fallen status
+        // Puts all the horses back to their starting position + resets their fallen status + adds the number of games played by 1
         for(HorseV2 horse : this.laneHorses) {
             horse.goBackToStart();
             horse.resetFallen();
+            horse.addGamePlayed();
         }
 
         ElapsedTime elapsedTime = new ElapsedTime();
@@ -202,7 +203,6 @@ public class RaceGUI {
                     horsesFile.saveMultipleHorses(laneHorses, false);
 
                     PastRacesFile pastRacesFile = new PastRacesFile();
-
                     PastRace pastRace = new PastRace(this.race.getRaceLength(), this.winningHorse, elapsedTimeSeconds);
                     pastRace.setTrackType(this.race.getTrackType());
                     pastRacesFile.savePastRace(pastRace);
@@ -245,7 +245,7 @@ public class RaceGUI {
         if (theHorse.getDistanceTravelled() >= this.race.getRaceLength() && !theHorse.hasFallen() && this.winningHorse == null)
         {
             this.winningHorse = theHorse;
-            theHorse.win(); // Increase the horse's confidence rating
+            theHorse.win(); // Increase the horse's confidence rating + win count
             return true;
         }
         else

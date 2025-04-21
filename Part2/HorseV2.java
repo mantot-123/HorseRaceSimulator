@@ -10,7 +10,7 @@ public class HorseV2
     //Fields of class Horse
     private String id;
 
-    // By default, the horse doesn't have any equipment, so there is no amplification
+    // By default, the horse doesn't have any equipment, meaning there are no modifiers provided for this horse
     private Equipment equipment = new Equipment(null, "None", 0, 0);
     private String name;
     private char symbol;
@@ -18,23 +18,19 @@ public class HorseV2
     private double confidenceRating;
     private boolean isFallen = false;
     
+    private int gamesPlayed;
+    private int gamesWon;
       
     //Constructor of class Horse
     /**
      * Constructor for objects of class Horse
      */
+
+    // A unique ID is automatically generated when these 2 constructors are used
+    // Normally used for adding new horses to a race
     public HorseV2(char horseSymbol, String horseName, double horseConfidence)
     {
         this.id = Helpers.randomString(10);
-        this.name = horseName;
-        this.symbol = horseSymbol;
-        this.confidenceRating = horseConfidence;
-    }
-
-    // Overloading = You can add an optional ID to your horse
-    public HorseV2(String id, char horseSymbol, String horseName, double horseConfidence)
-    {
-        this.id = id;
         this.name = horseName;
         this.symbol = horseSymbol;
         this.confidenceRating = horseConfidence;
@@ -49,25 +45,39 @@ public class HorseV2
         this.equipment = equipment;
     }
 
+    // These 2 constructors should be normally used for loading already existing horses
+    
     // Overloading = You can add an optional ID to your horse
-    public HorseV2(String id, char horseSymbol, String horseName, double horseConfidence, Equipment equipment)
+    public HorseV2(String id, char horseSymbol, String horseName, double horseConfidence, int gamesPlayed, int gamesWon)
+    {
+        this.id = id;
+        this.name = horseName;
+        this.symbol = horseSymbol;
+        this.confidenceRating = horseConfidence;
+        this.gamesPlayed = gamesPlayed;
+        this.gamesWon = gamesWon;
+    }
+
+    // Overloading = Equipment and number of games played and won can be added
+    public HorseV2(String id, char horseSymbol, String horseName, double horseConfidence, Equipment equipment, int gamesPlayed, int gamesWon)
     {
         this.id = id;
         this.name = horseName;
         this.symbol = horseSymbol;
         this.confidenceRating = horseConfidence;
         this.equipment = equipment;
+        this.gamesPlayed = gamesPlayed;
+        this.gamesWon = gamesWon;
     }
-    
     
     //Other methods of class Horse
     public void fall()
     {
         this.isFallen = true;
 
-        // decrease confidence rating by 0.1
-        // only do this as long as the confidence rating is above 0.1
-        if (this.confidenceRating > 0.1) {
+        // decrease confidence rating by 0.11
+        // only do this as long as the confidence rating is above 0.11
+        if (this.confidenceRating > 0.11) {
             setConfidence(this.confidenceRating - 0.1);
         }
     }
@@ -77,8 +87,12 @@ public class HorseV2
         if (this.confidenceRating < 1.0) {
             this.setConfidence(this.confidenceRating + 0.1);
         }
+        this.gamesWon++;
     }
 
+    public void addGamePlayed() {
+        this.gamesPlayed++;
+    }
 
     public void resetFallen()
     {
@@ -121,6 +135,18 @@ public class HorseV2
     public boolean hasFallen()
     {
         return this.isFallen;
+    }
+
+    public int getGamesPlayed() {
+        return this.gamesPlayed;
+    }
+
+    public int getGamesWon() {
+        return this.gamesWon;
+    }
+
+    public double getWinRating() {
+        return this.gamesWon / this.gamesPlayed;
     }
 
     public void moveForward()

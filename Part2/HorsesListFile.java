@@ -3,22 +3,24 @@ import java.util.*;
 
 public class HorsesListFile {
     private ArrayList<HorseV2> loadedHorses = new ArrayList<HorseV2>();
+    private final String FILENAME = "Horses.csv";
+    private final int NO_OF_COLUMNS = 7;
 
     public HorsesListFile() {
         loadHorses();
     }
 
     public void saveHorse(HorseV2 horse, boolean append) {
-        final int ID_SIZE = 10;
-        final String FILENAME = "Horses.csv";
-
         try(PrintWriter writer = new PrintWriter(new FileOutputStream(FILENAME, append))) {
             String id = horse.getId();
             String name = horse.getName();
             char symbol = horse.getSymbol();
             double confidence = horse.getConfidence();
             Equipment equipment = horse.getEquipment();
-            writer.println(id + "," + name + "," + symbol + "," + confidence + "," + equipment.getId());
+            int gamesPlayed = horse.getGamesPlayed();
+            int gamesWon = horse.getGamesWon();
+
+            writer.println(id + "," + name + "," + symbol + "," + confidence + "," + equipment.getId() + "," + gamesPlayed + "," + gamesWon);
             writer.close();
         } catch(IOException e) {
             System.out.println("ERROR: An error has occurred while writing to the file " + FILENAME);
@@ -50,9 +52,6 @@ public class HorsesListFile {
 
     // Updates the horses list with the new contents in the horses list file
     public void loadHorses() {
-        final int NO_OF_COLUMNS = 5;
-        final String FILENAME = "Horses.csv";
-
         try(BufferedReader reader = new BufferedReader(new FileReader(FILENAME))) {
             loadedHorses.clear();
             String line = reader.readLine();
@@ -68,11 +67,14 @@ public class HorsesListFile {
                     EquipmentFile eqFile = new EquipmentFile();
                     Equipment equipment = eqFile.getEquipmentList().get(eqId);
 
+                    int gamesPlayed = Integer.parseInt(horseData[5]);
+                    int gamesWon = Integer.parseInt(horseData[6]);
+
                     if(horseData[2].length() > 1) {
                         throw new IllegalArgumentException("Symbol must be a single character. Found a non single character: " + horseData[1]);
                     }
 
-                    HorseV2 newHorse = new HorseV2(id, symbol, name, confidence, equipment);
+                    HorseV2 newHorse = new HorseV2(id, symbol, name, confidence, equipment, gamesPlayed, gamesWon);
                     this.loadedHorses.add(newHorse);
                 } else {
                     throw new IllegalArgumentException("Invalid data format in line " + line + " of the CSV file");
