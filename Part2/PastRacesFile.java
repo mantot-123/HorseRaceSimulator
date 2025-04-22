@@ -92,4 +92,16 @@ public class PastRacesFile {
     public ArrayList<PastRace> getPastRaces() {
         return this.pastRaces;
     }
+
+    public ArrayList<PastRace> filterByHorseWon(String id) {
+        ArrayList<PastRace> races = new ArrayList<PastRace>();
+
+        for(PastRace p: this.pastRaces) {
+            if(p.getWinningHorse().getId().equals(id)) {
+                races.add(p);
+            }
+        }
+        
+        return races;
+    }
 }

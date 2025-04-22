@@ -1,13 +1,13 @@
 import java.awt.*;
 import javax.swing.*;
 
-public class PastRaceDetailsWindow {
+public class PastRaceDetailsDisplay {
     PastRace pastRaceToView;
     JFrame frame = new JFrame("Race details");
     JPanel panel1 = new JPanel(new GridLayout(5, 2));
     JPanel panel2 = new JPanel(new GridLayout(1, 1));
 
-    public PastRaceDetailsWindow(PastRace pastRace) {
+    public PastRaceDetailsDisplay(PastRace pastRace) {
         this.pastRaceToView = pastRace;
         loadPastRaceDetailsFrame();
     }

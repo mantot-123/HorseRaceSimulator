@@ -146,7 +146,7 @@ public class HorseV2
     }
 
     public double getWinRating() {
-        return this.gamesWon / this.gamesPlayed;
+        return (double)this.gamesWon / (double)this.gamesPlayed;
     }
 
     public void moveForward()
@@ -168,4 +168,8 @@ public class HorseV2
         this.symbol = newSymbol;
     }
     
+    @Override
+    public String toString() {
+        return this.name + ", " + this.symbol;
+    }
 }
