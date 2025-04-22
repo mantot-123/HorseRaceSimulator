@@ -71,6 +71,7 @@ public class HorseStatsDisplay {
 
         closeBtn.addActionListener(e -> {
             // TODO ADD A CLOSE FUNCTION HERE
+            this.frame.dispose();
         });
 
         this.panel3.add(viewRaceBtn);

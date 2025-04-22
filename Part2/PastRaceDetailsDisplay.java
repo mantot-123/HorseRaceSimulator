@@ -36,6 +36,7 @@ public class PastRaceDetailsDisplay {
         JButton closeBtn = new JButton("Close");
         closeBtn.addActionListener(e -> {
             // TODO ADD CLOSE OPERATION HERE...
+            this.frame.dispose();
         });
 
         this.panel2.add(closeBtn);

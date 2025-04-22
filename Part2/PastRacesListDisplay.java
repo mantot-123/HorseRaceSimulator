@@ -43,6 +43,10 @@ public class PastRacesListDisplay {
             }
         });
 
+        closeBtn.addActionListener(e -> {
+            this.frame.dispose();
+        });
+        
         this.panel2.add(viewBtn);
         this.panel2.add(closeBtn);
     }
