@@ -18,13 +18,13 @@ public class PastRacesListDisplay {
     }
 
     public void loadListPanel() {
+        // Convert the past races ArrayList to a fixed size array
         PastRace[] pastRacesArr = new PastRace[this.pastRacesList.size()];
         for(int i = 0; i < this.pastRacesList.size(); i++) {
             pastRacesArr[i] = this.pastRacesList.get(i);
         }
 
         this.pastRacesListDisplay.setListData(pastRacesArr);
-        // this.panel1.add(this.pastRacesListDisplay);
 
         this.panel1.add(scrollPane);
     }
@@ -37,7 +37,7 @@ public class PastRacesListDisplay {
             PastRace selectedPastRace = pastRacesListDisplay.getSelectedValue();
 
             if(selectedPastRace != null) {
-                PastRaceDetailsWindow detailsWindow = new PastRaceDetailsWindow(selectedPastRace);
+                PastRaceDetailsDisplay detailsWindow = new PastRaceDetailsDisplay(selectedPastRace);
             } else {
                 JOptionPane.showMessageDialog(null, "Please select a race you want to view from the list first.", "ERROR", JOptionPane.ERROR_MESSAGE);
             }

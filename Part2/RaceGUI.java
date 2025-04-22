@@ -124,7 +124,7 @@ public class RaceGUI {
         JButton startRaceBtn = new JButton("Start race");
         JButton openBettingsBtn = new JButton("Open bettings");
         JButton openPastRacesBtn = new JButton("Open past races");
-        JButton openStatsBtn = new JButton("Statistics");
+        JButton openHorsesListBtn = new JButton("List of horses");
         startRaceBtn.addActionListener(e -> {
             this.race.setTrackType((TrackType)trackComboBox.getSelectedItem());
             resetWinner();
@@ -139,11 +139,14 @@ public class RaceGUI {
             PastRacesListDisplay pastRacesDisplay = new PastRacesListDisplay();
         });
 
+        openHorsesListBtn.addActionListener(e -> {
+            HorsesListDisplay horsesListDisplay  = new HorsesListDisplay();
+        });
 
         optionsPanel.add(startRaceBtn);
         optionsPanel.add(openBettingsBtn);
         optionsPanel.add(openPastRacesBtn);
-        optionsPanel.add(openStatsBtn);
+        optionsPanel.add(openHorsesListBtn);
     }
 
     public void startRaceGUI() {
