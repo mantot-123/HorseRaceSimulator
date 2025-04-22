@@ -44,6 +44,7 @@ public class HorsesListDisplay {
 
         closeBtn.addActionListener(e -> {
             // TODO ADD A CLOSE FUNCTION HERE
+            this.frame.dispose();
         });
 
         this.panel2.add(viewBtn);
