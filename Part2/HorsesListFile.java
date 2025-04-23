@@ -113,4 +113,12 @@ public class HorsesListFile {
     public ArrayList<HorseV2> getHorsesList() {
         return this.loadedHorses;
     }
+
+    public HorseV2[] getHorsesArray() {
+        HorseV2[] horsesArr = new HorseV2[loadedHorses.size()];
+        for(int i = 0; i < this.loadedHorses.size(); i++) {
+            horsesArr[i] = this.loadedHorses.get(i);
+        }
+        return horsesArr;
+    }
 }
