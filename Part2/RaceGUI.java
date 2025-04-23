@@ -132,7 +132,7 @@ public class RaceGUI {
         });
 
         openBettingsBtn.addActionListener(e -> {
-            ViewBets viewBets = new ViewBets();
+            BetHistoryDisplay viewBets = new BetHistoryDisplay();
         });
 
         openPastRacesBtn.addActionListener(e -> {
