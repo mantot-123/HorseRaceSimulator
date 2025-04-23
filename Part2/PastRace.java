@@ -40,6 +40,10 @@ public class PastRace extends RaceInfo {
         return this.elapsedTime;
     }
 
+    public double getAverageSpeed() {
+        return (double)this.getRaceLength() / (double)this.elapsedTime;
+    }
+
     public String getDateCompleted() {
         return this.dateCompleted;
     }

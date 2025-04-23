@@ -4,7 +4,7 @@ import javax.swing.*;
 public class PastRaceDetailsDisplay {
     PastRace pastRaceToView;
     JFrame frame = new JFrame("Race details");
-    JPanel panel1 = new JPanel(new GridLayout(5, 2));
+    JPanel panel1 = new JPanel(new GridLayout(6, 2));
     JPanel panel2 = new JPanel(new GridLayout(1, 1));
 
     public PastRaceDetailsDisplay(PastRace pastRace) {
@@ -24,8 +24,11 @@ public class PastRaceDetailsDisplay {
         this.panel1.add(new JLabel("Winning horse:"));
         this.panel1.add(new JLabel(this.pastRaceToView.getWinningHorse().getName()));
 
-        this.panel1.add(new JLabel("Track type:"));
-        this.panel1.add(new JLabel(this.pastRaceToView.getTrackType().toString()));
+        this.panel1.add(new JLabel("Track length:"));
+        this.panel1.add(new JLabel(Integer.toString(this.pastRaceToView.getRaceLength()) + " blocks"));
+
+        this.panel1.add(new JLabel("Average speed of winning horse:"));
+        this.panel1.add(new JLabel(String.format("%.2f", this.pastRaceToView.getAverageSpeed()) + " blocks/second"));
 
         this.panel1.add(new JLabel("Elapsed time:"));
         this.panel1.add(new JLabel(this.pastRaceToView.getElapsedTime() + " seconds"));
