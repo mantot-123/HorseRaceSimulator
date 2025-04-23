@@ -10,14 +10,13 @@ public class HorseStatsDisplay {
     JPanel panel3 = new JPanel(new GridLayout(1, 1));
 
     PastRacesFile pastRacesFile = new PastRacesFile();
-    ArrayList<PastRace> pastRacesFiltered;
 
     JList<PastRace> pastRacesListDisplay = new JList<PastRace>();
     JScrollPane scrollPane = new JScrollPane(pastRacesListDisplay);
 
     public HorseStatsDisplay(HorseV2 horse) {
         this.horseToView = horse;
-        pastRacesFiltered = pastRacesFile.filterByHorseWon(horseToView.getId());
+        pastRacesFile.filterByHorseWon(horseToView.getId());
         loadHorseStatsFrame();
     }
 
@@ -46,10 +45,10 @@ public class HorseStatsDisplay {
     }
 
     public void loadPastRacesWonList() {
-        PastRace[] pastRacesFilteredArr = new PastRace[pastRacesFiltered.size()];
+        PastRace[] pastRacesFilteredArr = new PastRace[pastRacesFile.getPastRacesFiltered().size()];
 
-        for(int i = 0; i < pastRacesFiltered.size(); i++) {
-            pastRacesFilteredArr[i] = pastRacesFiltered.get(i);
+        for(int i = 0; i < pastRacesFile.getPastRacesFiltered().size(); i++) {
+            pastRacesFilteredArr[i] = pastRacesFile.getPastRacesFiltered().get(i);
         }
 
         this.pastRacesListDisplay.setListData(pastRacesFilteredArr);

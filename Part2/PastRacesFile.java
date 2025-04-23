@@ -3,6 +3,7 @@ import java.util.Collections;
 import java.io.*;
 public class PastRacesFile {
     private ArrayList<PastRace> pastRaces = new ArrayList<PastRace>();
+    private ArrayList<PastRace> pastRacesFiltered = new ArrayList<PastRace>(); // Filtered version of the past races list. Note that filters can stack.
     private final String FILENAME = "PastRaces.csv";
     private final int NO_OF_COLUMNS = 5;
 
@@ -93,15 +94,29 @@ public class PastRacesFile {
         return this.pastRaces;
     }
 
-    public ArrayList<PastRace> filterByHorseWon(String id) {
-        ArrayList<PastRace> races = new ArrayList<PastRace>();
+    public ArrayList<PastRace> getPastRacesFiltered() {
+        return this.pastRacesFiltered;
+    }
 
+    public void filterByHorseWon(String id) {
         for(PastRace p: this.pastRaces) {
             if(p.getWinningHorse().getId().equals(id)) {
-                races.add(p);
+                pastRacesFiltered.add(p);
             }
         }
-        
-        return races;
+    }
+
+
+    public void filterByTrackType(String id) {
+        for(PastRace p: this.pastRaces) {
+            if(p.getTrackType().getId().equals(id)) {
+                pastRacesFiltered.add(p);
+            }
+        }
+    }
+
+
+    public void resetFilters() {
+        pastRacesFiltered.clear();
     }
 }

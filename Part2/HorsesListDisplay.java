@@ -19,10 +19,7 @@ public class HorsesListDisplay {
 
     private void loadHorsesListPanel() {
         // Convert the horses ArrayList to a fixed size array
-        HorseV2[] horsesArr = new HorseV2[horses.size()];
-        for(int i = 0; i < this.horses.size(); i++) {
-            horsesArr[i] = this.horses.get(i);
-        }
+        HorseV2[] horsesArr = horses.toArray(new HorseV2[horses.size()]);
 
         this.horsesListDisplay.setListData(horsesArr);
         this.panel1.add(scrollPane);
