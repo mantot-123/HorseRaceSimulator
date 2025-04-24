@@ -45,34 +45,39 @@ public class BetHistoryDisplay {
         placeBetBtn.addActionListener(e -> {
             try {
                 String betterName = this.nameInput.getText();
-                
+                if(betterName.isEmpty())
+                    throw new IllegalArgumentException("Please enter the name of the better. The better name must not be empty.");
+
+
                 HorseV2 selectedHorse = (HorseV2)this.horseComboBox.getSelectedItem();
 
                 double betStake = 0.0;
                 if(!this.stakeInput.getText().isEmpty()) {
                     betStake = Double.parseDouble(this.stakeInput.getText());
+                    if(betStake < 0.0)
+                        throw new IllegalArgumentException("Please enter a valid stake amount. The stake amount must not be zero or negative.");
                 }
 
                 double betOdds;
-                if(selectedHorse.getWinRating() > 0.0) {
+                if(selectedHorse.getWinRating() > 0.0)
                     // Betting odds calculated by taking the reciprocal of the chosen horse's win wate
                     betOdds = 1 / selectedHorse.getWinRating();
-                } else {
+                else
                     // Use the horse's confidence as a metric for betting odds if they have not won a single race yet
                     betOdds = 1 / selectedHorse.getConfidence();
-                }
 
                 Bet bet = new Bet(betterName, selectedHorse, betStake, betOdds);
                 this.betsListModel.addElement(bet);
 
                 betHistoryFile.saveBet(bet);
 
-            } catch(IllegalArgumentException exception) {
-                if(exception.getMessage() != null)
-                    JOptionPane.showMessageDialog(null, exception.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-                else
-                    JOptionPane.showMessageDialog(null, "An error has occurred while placing a bet. Possible that you might have entered an invalid stake number?", "ERROR", JOptionPane.ERROR_MESSAGE);
-                exception.printStackTrace();
+            } catch(NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Please enter a valid stake amount. It has to be a number.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+    
+            } catch(IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
             }
         });
     }
