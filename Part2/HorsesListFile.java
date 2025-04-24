@@ -60,6 +60,11 @@ public class HorsesListFile {
                 if(horseData.length == NO_OF_COLUMNS) {
                     String id = horseData[0];
                     String name = horseData[1];
+
+                    if(horseData[2].length() > 1) {
+                        throw new IllegalArgumentException("Symbol must be a single character. Found a non single character: " + horseData[2]);
+                    }
+
                     char symbol = horseData[2].charAt(0);
                     double confidence = Double.parseDouble(horseData[3]);
                     String eqId = horseData[4];
@@ -69,10 +74,6 @@ public class HorsesListFile {
 
                     int gamesPlayed = Integer.parseInt(horseData[5]);
                     int gamesWon = Integer.parseInt(horseData[6]);
-
-                    if(horseData[2].length() > 1) {
-                        throw new IllegalArgumentException("Symbol must be a single character. Found a non single character: " + horseData[1]);
-                    }
 
                     HorseV2 newHorse = new HorseV2(id, symbol, name, confidence, equipment, gamesPlayed, gamesWon);
                     this.loadedHorses.add(newHorse);
