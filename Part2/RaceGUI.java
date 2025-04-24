@@ -24,6 +24,8 @@ public class RaceGUI {
     private ArrayList<HorseV2> laneHorses = new ArrayList<HorseV2>();
     private HorseV2 winningHorse;
 
+    BetHistoryDisplay betHistoryDisplay;
+
     public RaceGUI(int raceLength) {
         if(raceLength < 10) {
             throw new IllegalArgumentException("ERROR: Please enter a valid race length. It must be a whole number, and it has to be at least 10 blocks long.");
@@ -132,7 +134,10 @@ public class RaceGUI {
         });
 
         openBettingsBtn.addActionListener(e -> {
-            BetHistoryDisplay viewBets = new BetHistoryDisplay();
+            if(this.betHistoryDisplay == null)
+                betHistoryDisplay = new BetHistoryDisplay();
+
+            betHistoryDisplay.showFrame();
         });
 
         openPastRacesBtn.addActionListener(e -> {
@@ -172,7 +177,8 @@ public class RaceGUI {
             loadOptionsPanel();
             loadRaceFrame();
         } catch(IllegalArgumentException e) {
-            return;
+            System.out.println("ERROR: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -183,8 +189,6 @@ public class RaceGUI {
         for(HorseV2 horse: this.getLaneHorses()) {
             System.out.println("Horse ID: " + horse.getId() + ", name: " + horse.getName() + ", symbol: " + horse.getSymbol() + ", confidence: " + horse.getConfidence() + ", equipment: " + horse.getEquipment().toString());
         }
-
-        boolean finished = false;
 
         // Puts all the horses back to their starting position + resets their fallen status + adds the number of games played by 1
         for(HorseV2 horse : this.laneHorses) {
@@ -345,5 +349,9 @@ public class RaceGUI {
                 theHorse.fall();
             }
         }
+    }
+
+    private void markBets() {
+        // TODO = MARK BETS AS WON OR LOST AND SAVE THEM HERE
     }
 }

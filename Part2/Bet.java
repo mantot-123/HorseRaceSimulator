@@ -9,20 +9,20 @@ public class Bet {
     private int status = 0;
 
     public Bet(String chosenName, HorseV2 chosenHorse, double chosenStake, double odds) {
-        if(chosenName == null) {
-            throw new IllegalArgumentException("ERROR: Better name must not be empty.");
+        if(chosenName == null || chosenName.isEmpty()) {
+            throw new IllegalArgumentException("Better name must not be empty!");
         }
 
         if(chosenHorse == null) {
-            throw new IllegalArgumentException("ERROR: Chosen horse must not be null");
+            throw new IllegalArgumentException("Chosen horse must not be null");
         }
 
         if(chosenStake <= 0) {
-            throw new IllegalArgumentException("ERROR: Stake amount must not be zero or negative.");
+            throw new IllegalArgumentException("Stake amount must not be zero or negative.");
         }
 
         if(odds < 0) {
-            throw new IllegalArgumentException("ERROR: Betting odds must not be negative.");
+            throw new IllegalArgumentException("Betting odds must not be negative.");
         }
 
         this.betterName = chosenName;
@@ -33,24 +33,24 @@ public class Bet {
 
     // Overloading = 
     public Bet(String chosenName, HorseV2 chosenHorse, double chosenStake, double odds, double winnings, int status) {
-        if(chosenName == null) {
-            throw new IllegalArgumentException("ERROR: Better name must not be empty.");
+        if(chosenName == null || chosenName.isEmpty()) {
+            throw new IllegalArgumentException("Better name must not be empty.");
         }
 
         if(chosenHorse == null) {
-            throw new IllegalArgumentException("ERROR: Chosen horse must not be null");
+            throw new IllegalArgumentException("Chosen horse must not be null");
         }
 
         if(chosenStake <= 0) {
-            throw new IllegalArgumentException("ERROR: Stake amount must not be zero or negative.");
+            throw new IllegalArgumentException("Stake amount must not be zero or negative.");
         }
 
         if(odds < 0) {
-            throw new IllegalArgumentException("ERROR: Betting odds must not be negative.");
+            throw new IllegalArgumentException("Betting odds must not be negative.");
         }
 
         if(status < 0 || status > 2) {
-            throw new IllegalArgumentException("ERROR: Bet status must be 0, 1 or 2 only");
+            throw new IllegalArgumentException("Bet status must be 0, 1 or 2 only");
         }
 
         this.betterName = chosenName;
@@ -93,6 +93,19 @@ public class Bet {
     public void lose() {
         this.status = 2;
         this.winnings = (-1) * this.betStake; // Negative winnings means money is lost from the bet
+    }
+
+    @Override
+    public String toString() {
+        String statusAsString = "";
+        if(this.status == 0)
+            statusAsString = "Pending...";
+        else if(this.status == 1)
+            statusAsString = "Won";
+        else if(this.status == 2)
+            statusAsString = "Lost";
+
+        return "Name: " + this.betterName + " | Horse: " + this.horse.getName() + " | Stake: $" + this.betStake + " | Odds:" + String.format("%.2f", this.betOdds) +  " | Winnings: $" + this.winnings + " | Status: " + statusAsString;
     }
 
 }
