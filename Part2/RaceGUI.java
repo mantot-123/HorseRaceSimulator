@@ -20,6 +20,11 @@ public class RaceGUI {
     ArrayList<JTextField> horseLaneLabels = new ArrayList<JTextField>();
     ArrayList<JLabel> topPanelHorseLabels = new ArrayList<JLabel>();
 
+    JButton startRaceBtn = new JButton("Start race");
+    JButton openBettingsBtn = new JButton("Open bettings");
+    JButton openPastRacesBtn = new JButton("Open past races");
+    JButton openHorsesListBtn = new JButton("List of horses");
+
     private RaceInfo race;
     private ArrayList<HorseV2> laneHorses = new ArrayList<HorseV2>();
     private HorseV2 winningHorse;
@@ -123,10 +128,6 @@ public class RaceGUI {
 
     // Loads the options panel for the race
     public void loadOptionsPanel() {
-        JButton startRaceBtn = new JButton("Start race");
-        JButton openBettingsBtn = new JButton("Open bettings");
-        JButton openPastRacesBtn = new JButton("Open past races");
-        JButton openHorsesListBtn = new JButton("List of horses");
         startRaceBtn.addActionListener(e -> {
             this.race.setTrackType((TrackType)trackComboBox.getSelectedItem());
             resetWinner();
@@ -184,6 +185,8 @@ public class RaceGUI {
 
     // Simulates the horse race when called.
     private void simulateRace() {
+        startRaceBtn.setEnabled(false);
+        
         // Temporary test code. This can be removed....
         System.out.println("Track type: " + this.race.getTrackType().toString());
         for(HorseV2 horse: this.getLaneHorses()) {
@@ -222,6 +225,8 @@ public class RaceGUI {
                     PastRace pastRace = new PastRace(this.race.getRaceLength(), this.winningHorse, elapsedTimeSeconds);
                     pastRace.setTrackType(this.race.getTrackType());
                     pastRacesFile.savePastRace(pastRace);
+
+                    startRaceBtn.setEnabled(true);
                     ((Timer)e.getSource()).stop(); // Stops the timer
                 }
             }
@@ -239,6 +244,8 @@ public class RaceGUI {
 
                 pastRace.setTrackType(this.race.getTrackType());
                 pastRacesFile.savePastRace(pastRace);
+
+                startRaceBtn.setEnabled(true);
                 ((Timer)e.getSource()).stop();
             }
 
