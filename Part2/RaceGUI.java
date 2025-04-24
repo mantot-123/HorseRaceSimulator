@@ -150,21 +150,30 @@ public class RaceGUI {
     }
 
     public void startRaceGUI() {
-        // Horses' details added to the top panel
-        for(HorseV2 horse: this.laneHorses) {
-            addHorseToTopPanel(horse);
+        try {
+            if(laneHorses.size() < 2) {
+                JOptionPane.showMessageDialog(null, "Cannot start race because there are not enough horses to join the race. At least 2 horses are required to start the race", "ERROR", JOptionPane.ERROR_MESSAGE);
+                throw new IllegalArgumentException("Cannot start race because there are not enough horses to join the race. At least 2 horses are required to start the race");
+            }
+
+            // Horses' details added to the top panel
+            for(HorseV2 horse: this.laneHorses) {
+                addHorseToTopPanel(horse);
+            }
+
+            loadTrackSettingsPanel();
+
+            // Lane horses added
+            for(HorseV2 horse: this.laneHorses) {
+                addHorseToLanePanel(horse);
+            }
+
+            loadTopPanel();
+            loadOptionsPanel();
+            loadRaceFrame();
+        } catch(IllegalArgumentException e) {
+            return;
         }
-
-        loadTrackSettingsPanel();
-
-        // Lane horses added
-        for(HorseV2 horse: this.laneHorses) {
-            addHorseToLanePanel(horse);
-        }
-
-        loadTopPanel();
-        loadOptionsPanel();
-        loadRaceFrame();
     }
 
     // Simulates the horse race when called.
