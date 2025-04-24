@@ -20,9 +20,16 @@ public class RaceGUI {
     ArrayList<JTextField> horseLaneLabels = new ArrayList<JTextField>();
     ArrayList<JLabel> topPanelHorseLabels = new ArrayList<JLabel>();
 
+    JButton startRaceBtn = new JButton("Start race");
+    JButton openBettingsBtn = new JButton("Open bettings");
+    JButton openPastRacesBtn = new JButton("Open past races");
+    JButton openHorsesListBtn = new JButton("List of horses");
+
     private RaceInfo race;
     private ArrayList<HorseV2> laneHorses = new ArrayList<HorseV2>();
     private HorseV2 winningHorse;
+
+    BetHistoryDisplay betHistoryDisplay;
 
     public RaceGUI(int raceLength) {
         if(raceLength < 10) {
@@ -121,10 +128,6 @@ public class RaceGUI {
 
     // Loads the options panel for the race
     public void loadOptionsPanel() {
-        JButton startRaceBtn = new JButton("Start race");
-        JButton openBettingsBtn = new JButton("Open bettings");
-        JButton openPastRacesBtn = new JButton("Open past races");
-        JButton openHorsesListBtn = new JButton("List of horses");
         startRaceBtn.addActionListener(e -> {
             this.race.setTrackType((TrackType)trackComboBox.getSelectedItem());
             resetWinner();
@@ -132,7 +135,10 @@ public class RaceGUI {
         });
 
         openBettingsBtn.addActionListener(e -> {
-            BetHistoryDisplay viewBets = new BetHistoryDisplay();
+            if(this.betHistoryDisplay == null)
+                betHistoryDisplay = new BetHistoryDisplay();
+
+            betHistoryDisplay.showFrame();
         });
 
         openPastRacesBtn.addActionListener(e -> {
@@ -172,19 +178,20 @@ public class RaceGUI {
             loadOptionsPanel();
             loadRaceFrame();
         } catch(IllegalArgumentException e) {
-            return;
+            System.out.println("ERROR: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
     // Simulates the horse race when called.
     private void simulateRace() {
+        startRaceBtn.setEnabled(false);
+        
         // Temporary test code. This can be removed....
         System.out.println("Track type: " + this.race.getTrackType().toString());
         for(HorseV2 horse: this.getLaneHorses()) {
             System.out.println("Horse ID: " + horse.getId() + ", name: " + horse.getName() + ", symbol: " + horse.getSymbol() + ", confidence: " + horse.getConfidence() + ", equipment: " + horse.getEquipment().toString());
         }
-
-        boolean finished = false;
 
         // Puts all the horses back to their starting position + resets their fallen status + adds the number of games played by 1
         for(HorseV2 horse : this.laneHorses) {
@@ -218,6 +225,8 @@ public class RaceGUI {
                     PastRace pastRace = new PastRace(this.race.getRaceLength(), this.winningHorse, elapsedTimeSeconds);
                     pastRace.setTrackType(this.race.getTrackType());
                     pastRacesFile.savePastRace(pastRace);
+
+                    startRaceBtn.setEnabled(true);
                     ((Timer)e.getSource()).stop(); // Stops the timer
                 }
             }
@@ -235,6 +244,8 @@ public class RaceGUI {
 
                 pastRace.setTrackType(this.race.getTrackType());
                 pastRacesFile.savePastRace(pastRace);
+
+                startRaceBtn.setEnabled(true);
                 ((Timer)e.getSource()).stop();
             }
 
@@ -345,5 +356,9 @@ public class RaceGUI {
                 theHorse.fall();
             }
         }
+    }
+
+    private void markBets() {
+        // TODO = MARK BETS AS WON OR LOST AND SAVE THEM HERE
     }
 }

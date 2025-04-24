@@ -34,7 +34,7 @@ public class BetHistoryFile {
                     Bet bet = new Bet(betterName, horse, betStake, betOdds, betWinnings, betStatus);
                     bets.add(bet);
                 } else {
-                    throw new IllegalArgumentException("ERROR: Invalid data format in line '" + line + "' of " + FILENAME + " file");
+                    throw new IOException("ERROR: Invalid data format in line '" + line + "' of " + FILENAME + " file");
                 }
 
                 line = reader.readLine();
@@ -52,7 +52,7 @@ public class BetHistoryFile {
             if(e.getMessage() != null) {
                 System.out.println("ERROR: " + e.getMessage());
             } else {
-                System.out.println("ERROR: An error occurred while loading from the file " + FILENAME + ". Possible that the file does not exist or is renamed?");
+                System.out.println("ERROR: An error occurred while loading from the file " + FILENAME + ". Possible that the file does not exist, is renamed or the contents are corrupted?");
             }
             e.printStackTrace();
         }
@@ -71,12 +71,26 @@ public class BetHistoryFile {
             writer.println(name + "," + horseId + "," + stake + "," + odds + "," + winnings + "," + status);
             writer.close();
         } catch(NullPointerException e) {
-            System.out.println("ERROR: The bet provided is null. Please ");
+            System.out.println("ERROR: The bet provided is null. Please give a valid bet.");
             e.printStackTrace();
         } catch(IOException e) {
             System.out.println("ERROR: An error occurred while writing to the file " + FILENAME + ". Possible that the file does not exist for is renamed?");
             e.printStackTrace();
         }
+    }
+
+    public void clearBets() {
+        try(PrintWriter writer = new PrintWriter(new FileOutputStream(FILENAME))) {
+            writer.println();
+            writer.close();
+        } catch(IOException e) {
+            System.out.println("ERROR: An error occurred while writing to the file " + FILENAME + ". Possible that the file does not exist for is renamed?");
+            e.printStackTrace(); 
+        }
+    }
+
+    public ArrayList<Bet> getBetsList() {
+        return this.bets;
     }
 
 }
