@@ -3,6 +3,7 @@ import java.util.Vector;
 import javax.management.openmbean.OpenDataException;
 import javax.swing.*;
 import java.awt.*;
+import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
 
 public class RaceMenu {
     RaceGUI race;
@@ -106,39 +107,40 @@ public class RaceMenu {
                 if(raceLengthInput < 10) {
                     throw new NumberFormatException();
                 }
-            } catch(NumberFormatException exception) {
-                JOptionPane.showMessageDialog(null, "ERROR: Please enter a valid race length. It must be a whole number, and it has to be at least 10 blocks long.");
-                return;
-            }
 
-            // Check if there are at least 2 horses to start the race
-            if(horseCount < 2) {
-                JOptionPane.showMessageDialog(null, "ERROR: You must have at least 2 horses before starting the race.");
-                return;
-            }
-
-            // Check for any empty horse name and symbol fields
-            for(JTextField nameField: this.horseNameFields) {
-                String horseName = nameField.getText();
-                if(horseName.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "ERROR: One of your horses' names are empty! Please enter a name for all horses.");
-                    return;
+                // Check if there are at least 2 horses to start the race
+                if(horseCount < 2) {
+                    throw new IllegalArgumentException("You must have at least 2 horses before starting the race.");
                 }
-            }
 
-            for(JTextField symbolField: this.horseSymbolFields) {
-                String horseSymbol = symbolField.getText();
-                if(horseSymbol.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "ERROR: One of your horses' symbols are empty! Please enter a symbol for all horses.");
-                    return;
-                } else if(horseSymbol.length() > 1) {
-                    JOptionPane.showMessageDialog(null, "ERROR: You can only use 1 character as a symbol for all your horses. Check your horses and try again.");
-                    return;
+                // Check for any empty horse name and symbol fields
+                for(JTextField nameField: this.horseNameFields) {
+                    String horseName = nameField.getText();
+                    if(horseName.isEmpty()) {
+                        throw new IllegalArgumentException("One of your horses' names are empty! Please enter a name for all horses.");
+                    }
                 }
+
+                for(JTextField symbolField: this.horseSymbolFields) {
+                    String horseSymbol = symbolField.getText();
+                    if(horseSymbol.isEmpty()) {
+                        throw new IllegalArgumentException("One of your horses' symbols are empty! Please enter a symbol for all horses.");
+                    } else if(horseSymbol.length() > 1) {
+                        throw new IllegalArgumentException("You can only use 1 character as a symbol for all your horses. Check your horses and try again.");
+                    }
+                }
+    
+                raceLengthInput = Integer.parseInt(raceLengthField.getText());
+                setRaceConfiguration();
+
+            } catch(NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Please enter a valid race length. It must be a whole number, and it has to be at least 10 blocks long.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+            } catch(IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
             }
 
-            raceLengthInput = Integer.parseInt(raceLengthField.getText());
-            setRaceConfiguration();
         });
 
         panel2.add(startRaceButton);
