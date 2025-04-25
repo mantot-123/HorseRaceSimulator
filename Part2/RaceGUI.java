@@ -67,12 +67,21 @@ public class RaceGUI {
     }
 
     public void addHorse(HorseV2 horseToAdd) {
-        if(!this.laneHorses.contains(horseToAdd)) {
+        try {
+            if(horseToAdd == null) {
+                throw new NullPointerException("Horse to add cannot be null.");
+            }
+
+            if(this.laneHorses.contains(horseToAdd)) {
+                int laneNo = this.laneHorses.indexOf(horseToAdd) + 1;
+                throw new IllegalArgumentException("ERROR: The horse " + horseToAdd.getName() + " is already added to lane " + laneNo + ". Please add a different horse.");
+            }
+
             this.laneHorses.add(horseToAdd);
-        } else {
-            int laneNo = this.laneHorses.indexOf(horseToAdd) + 1;
-            JOptionPane.showMessageDialog(null, "ERROR: The horse " + horseToAdd.getName() + " is already added to lane " + laneNo + ". Please add a different horse.");
-            return;
+
+        } catch(NullPointerException | IllegalArgumentException e) {
+            System.out.println("ERROR: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
