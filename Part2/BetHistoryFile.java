@@ -17,6 +17,7 @@ public class BetHistoryFile {
 
     public void loadBets() {
         try(BufferedReader reader = new BufferedReader(new FileReader(FILENAME))) {
+            bets.clear(); // Clear all the existing bets in the ArrayList before loading new ones
             HorsesListFile horsesFile = new HorsesListFile();
             String line = reader.readLine();
             while(line != null && !line.isEmpty()) {
@@ -31,6 +32,13 @@ public class BetHistoryFile {
                     int betStatus = Integer.parseInt(data[5]);
 
                     HorseV2 horse = horsesFile.searchById(horseId);
+
+                    // If the horse can't be found, set it to an unknown horse
+                    if(horse == null) {
+                        System.out.println("WARNING: Unable to find horse with ID '" + horseId + "' in the file '" + FILENAME + "'. Setting it to an UNKNOWN_HORSE.");
+                        horse = SpecialHorses.UNKNOWN_HORSE; 
+                    }
+
                     Bet bet = new Bet(betterName, horse, betStake, betOdds, betWinnings, betStatus);
                     bets.add(bet);
                 } else {
@@ -58,9 +66,9 @@ public class BetHistoryFile {
         }
     }
 
-    public void saveBet(Bet bet) {
+    public void saveBet(Bet bet, boolean append) {
         // TODO SAVE PAST RACE DATA HERE
-        try(PrintWriter writer = new PrintWriter(new FileOutputStream(FILENAME, true))) {
+        try(PrintWriter writer = new PrintWriter(new FileOutputStream(FILENAME, append))) {
             String name = bet.getBetterName();
             String horseId = bet.getHorse().getId();
             double stake = bet.getStake();
@@ -79,9 +87,19 @@ public class BetHistoryFile {
         }
     }
 
-    public void clearBets() {
+    public void saveMultipleBets(ArrayList<Bet> bets, boolean append) {
+        if(!append) {
+            clearBetsFile(); // Overwrite the contents of the save file if "append" is true
+        }
+
+        for(Bet bet: bets) {
+            saveBet(bet, true);
+        }
+    }
+
+    public void clearBetsFile() {
         try(PrintWriter writer = new PrintWriter(new FileOutputStream(FILENAME))) {
-            writer.println();
+            writer.print("");
             writer.close();
         } catch(IOException e) {
             System.out.println("ERROR: An error occurred while writing to the file " + FILENAME + ". Possible that the file does not exist for is renamed?");

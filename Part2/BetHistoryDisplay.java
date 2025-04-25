@@ -3,25 +3,33 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class BetHistoryDisplay {
-    JFrame frame = new JFrame("Current bets");
-    JPanel panel1 = new JPanel(new GridLayout(1, 7));
-    JPanel panel2 = new JPanel(new GridLayout(1, 1));
+    private JFrame frame = new JFrame("Current bets");
+    private JPanel panel1 = new JPanel(new GridLayout(1, 7));
+    private JPanel panel2 = new JPanel(new GridLayout(1, 1));
 
-    JTextField nameInput = new JTextField(15);
-    JComboBox<HorseV2> horseComboBox = new JComboBox<HorseV2>();
-    JTextField stakeInput = new JTextField(15);
+    private JTextField nameInput = new JTextField(15);
+    private JComboBox<HorseV2> horseComboBox = new JComboBox<HorseV2>();
+    private JTextField stakeInput = new JTextField(15);
 
-    DefaultListModel<Bet> betsListModel = new DefaultListModel<>();
-    JList<Bet> betsListDisplay = new JList<Bet>(betsListModel);
-    JScrollPane scrollPane = new JScrollPane(betsListDisplay);
+    private DefaultListModel<Bet> betsListModel = new DefaultListModel<>();
+    private JList<Bet> betsListDisplay = new JList<Bet>(betsListModel);
+    private JScrollPane scrollPane = new JScrollPane(betsListDisplay);
 
-    HorsesListFile horsesFile = new HorsesListFile();
-    BetHistoryFile betHistoryFile = new BetHistoryFile();
+    private HorsesListFile horsesFile = new HorsesListFile();
+    private BetHistoryFile betHistoryFile = new BetHistoryFile();
 
-    ArrayList<Bet> bets = betHistoryFile.getBetsList();
+    private ArrayList<Bet> bets = betHistoryFile.getBetsList();
 
     public BetHistoryDisplay()  {
         loadFrame();
+    }
+
+    public ArrayList<Bet> getBetsArrayList() {
+        return this.bets;
+    }
+
+    public BetHistoryFile getBetHistoryFile() {
+        return this.betHistoryFile;
     }
     
     public void loadPlaceBetForm() {
@@ -68,8 +76,9 @@ public class BetHistoryDisplay {
 
                 Bet bet = new Bet(betterName, selectedHorse, betStake, betOdds);
                 this.betsListModel.addElement(bet);
+                this.bets.add(bet); 
 
-                betHistoryFile.saveBet(bet);
+                betHistoryFile.saveBet(bet, true);
 
             } catch(NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "Please enter a valid stake amount. It has to be a number.", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -83,13 +92,25 @@ public class BetHistoryDisplay {
     }
 
     public void loadBetHistoryList() {
-        betsListModel.clear(); // Clear the list before loading the bets
+        this.betsListModel.clear(); // Clear the list before loading the bets
+
+        for(Bet b: this.bets) {
+            this.betsListModel.addElement(b);
+        }
+
+        this.panel2.add(scrollPane);
+    }
+
+    public void reloadBetHistoryList() {
+        this.betsListModel.clear(); // Clear the list before loading the bets
+
+        // Reload the bet history ArrayList from the file with the new contents
+        this.betHistoryFile.loadBets();
+        this.bets = this.betHistoryFile.getBetsList();
 
         for(Bet b: this.bets) {
             betsListModel.addElement(b);
         }
-
-        this.panel2.add(scrollPane);
     }
 
     public void loadFrame() {

@@ -49,6 +49,10 @@ public class Bet {
             throw new IllegalArgumentException("Betting odds must not be negative.");
         }
 
+        if(winnings < 0) {
+            throw new IllegalArgumentException("Winnings must not be negative.");
+        }
+
         if(status < 0 || status > 2) {
             throw new IllegalArgumentException("Bet status must be 0, 1 or 2 only");
         }
@@ -57,6 +61,8 @@ public class Bet {
         this.horse = chosenHorse;
         this.betStake = chosenStake;
         this.betOdds = odds;
+        this.winnings = winnings;
+        this.status = status;
     }
 
     public String getBetterName() {
@@ -85,6 +91,25 @@ public class Bet {
         return this.status;
     }
 
+    public String getStatusAsString() {
+        String statusAsString;
+        switch(this.status) {
+            case 0:
+                statusAsString = "Pending...";
+                break;
+            case 1:
+                statusAsString = "WON";
+                break;
+            case 2:
+                statusAsString = "LOST";
+                break;
+            default:
+                statusAsString = "";
+                break;
+        }
+        return statusAsString;
+    }
+
     public void win() {
         this.status = 1;
         this.winnings = this.betOdds * this.betStake;
@@ -92,20 +117,11 @@ public class Bet {
 
     public void lose() {
         this.status = 2;
-        this.winnings = (-1) * this.betStake; // Negative winnings means money is lost from the bet
     }
 
     @Override
     public String toString() {
-        String statusAsString = "";
-        if(this.status == 0)
-            statusAsString = "Pending...";
-        else if(this.status == 1)
-            statusAsString = "Won";
-        else if(this.status == 2)
-            statusAsString = "Lost";
-
-        return "Name: " + this.betterName + " | Horse: " + this.horse.getName() + " | Stake: $" + this.betStake + " | Odds:" + String.format("%.2f", this.betOdds) +  " | Winnings: $" + this.winnings + " | Status: " + statusAsString;
+        return "Name: " + this.betterName + " | Horse: " + this.horse.getName() + " | Stake: $" + String.format("%.2f", this.betStake) + " | Odds: " + String.format("%.2f", this.betOdds) +  " | Winnings: $" + String.format("%.2f", this.winnings) + " | Status: " + this.getStatusAsString();
     }
 
 }
