@@ -4,32 +4,32 @@ import java.util.Vector;
 import javax.swing.*;
 
 public class RaceGUI {
-    JFrame frame = new JFrame("Ongoing race...");
+    private JFrame frame = new JFrame("Ongoing race...");
 
-    JPanel topPanel = new JPanel(new GridLayout(0, 2));
-    JPanel subPanel1 = new JPanel(new GridLayout(0, 1));
-    JPanel subPanel2 = new JPanel(new  GridLayout(1, 2));
+    private JPanel topPanel = new JPanel(new GridLayout(0, 2));
+    private JPanel subPanel1 = new JPanel(new GridLayout(0, 1));
+    private JPanel subPanel2 = new JPanel(new  GridLayout(1, 2));
 
-    JPanel horseLanePanel = new JPanel(new GridLayout(0, 1, 10, 10));
-    JPanel optionsPanel = new JPanel(new GridLayout(1, 0, 10, 10));
+    private JPanel horseLanePanel = new JPanel(new GridLayout(0, 1, 10, 10));
+    private JPanel optionsPanel = new JPanel(new GridLayout(1, 0));
     
-    TrackTypesFile trackTypesFile = new TrackTypesFile();
-    Vector<TrackType> trackTypes = new Vector<TrackType>(trackTypesFile.getTrackTypes().values());
+    private TrackTypesFile trackTypesFile = new TrackTypesFile();
+    private Vector<TrackType> trackTypes = new Vector<TrackType>(trackTypesFile.getTrackTypes().values());
 
-    JComboBox<TrackType> trackComboBox  = new JComboBox<TrackType>(trackTypes);
-    ArrayList<JTextField> horseLaneLabels = new ArrayList<JTextField>();
-    ArrayList<JLabel> topPanelHorseLabels = new ArrayList<JLabel>();
+    private JComboBox<TrackType> trackComboBox  = new JComboBox<TrackType>(trackTypes);
+    private ArrayList<JTextField> horseLaneLabels = new ArrayList<JTextField>();
+    private ArrayList<JLabel> topPanelHorseLabels = new ArrayList<JLabel>();
 
-    JButton startRaceBtn = new JButton("Start race");
-    JButton openBettingsBtn = new JButton("Open bettings");
-    JButton openPastRacesBtn = new JButton("Open past races");
-    JButton openHorsesListBtn = new JButton("List of horses");
+    private JButton startRaceBtn = new JButton("Start race");
+    private JButton openBettingsBtn = new JButton("Open bettings");
+    private JButton openPastRacesBtn = new JButton("Open past races");
+    private JButton openHorsesListBtn = new JButton("List of horses");
 
     private RaceInfo race;
     private ArrayList<HorseV2> laneHorses = new ArrayList<HorseV2>();
     private HorseV2 winningHorse;
 
-    BetHistoryDisplay betHistoryDisplay;
+    private BetHistoryDisplay betHistoryDisplay = new BetHistoryDisplay();
 
     public RaceGUI(int raceLength) {
         if(raceLength < 10) {
@@ -67,12 +67,21 @@ public class RaceGUI {
     }
 
     public void addHorse(HorseV2 horseToAdd) {
-        if(!this.laneHorses.contains(horseToAdd)) {
+        try {
+            if(horseToAdd == null) {
+                throw new NullPointerException("Horse to add cannot be null.");
+            }
+
+            if(this.laneHorses.contains(horseToAdd)) {
+                int laneNo = this.laneHorses.indexOf(horseToAdd) + 1;
+                throw new IllegalArgumentException("ERROR: The horse " + horseToAdd.getName() + " is already added to lane " + laneNo + ". Please add a different horse.");
+            }
+
             this.laneHorses.add(horseToAdd);
-        } else {
-            int laneNo = this.laneHorses.indexOf(horseToAdd) + 1;
-            JOptionPane.showMessageDialog(null, "ERROR: The horse " + horseToAdd.getName() + " is already added to lane " + laneNo + ". Please add a different horse.");
-            return;
+
+        } catch(NullPointerException | IllegalArgumentException e) {
+            System.out.println("ERROR: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -135,9 +144,6 @@ public class RaceGUI {
         });
 
         openBettingsBtn.addActionListener(e -> {
-            if(this.betHistoryDisplay == null)
-                betHistoryDisplay = new BetHistoryDisplay();
-
             betHistoryDisplay.showFrame();
         });
 
@@ -226,6 +232,8 @@ public class RaceGUI {
                     pastRace.setTrackType(this.race.getTrackType());
                     pastRacesFile.savePastRace(pastRace);
 
+                    markBets(); // Mark the bets as won or lost
+
                     startRaceBtn.setEnabled(true);
                     ((Timer)e.getSource()).stop(); // Stops the timer
                 }
@@ -244,6 +252,8 @@ public class RaceGUI {
 
                 pastRace.setTrackType(this.race.getTrackType());
                 pastRacesFile.savePastRace(pastRace);
+
+                markBets(); // Mark the bets as won or lost
 
                 startRaceBtn.setEnabled(true);
                 ((Timer)e.getSource()).stop();
@@ -358,7 +368,32 @@ public class RaceGUI {
         }
     }
 
+    // Marks bets as won or lost after each race
     private void markBets() {
         // TODO = MARK BETS AS WON OR LOST AND SAVE THEM HERE
+        ArrayList<Bet> bets = this.betHistoryDisplay.getBetsArrayList();
+ 
+        // Check if there is no winning horse, then lose all the pending bets
+        if(winningHorse == null) {
+            for(Bet bet: bets) {
+                if(bet.getStatus() == 0) {
+                    bet.lose();
+                }
+            }
+        } else {
+            for(Bet bet: bets) {
+                if(bet.getStatus() == 0) {
+                    if(bet.getHorse().getId().equals(winningHorse.getId())) {
+                        bet.win();
+                    } else {
+                        bet.lose();
+                    }
+                }
+            }
+        }
+
+        this.betHistoryDisplay.getBetHistoryFile().saveMultipleBets(bets, false);
+
+        this.betHistoryDisplay.reloadBetHistoryList(); // Reload the bet history list with the new bets
     }
 }
