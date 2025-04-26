@@ -103,10 +103,21 @@ public class RaceGUI {
 
     // Adds a horse's name and confidence to the top panel
     public void addHorseToTopPanel(HorseV2 horse) {
-        JLabel horseLabel = new JLabel(horse.getName() + " (Current confidence: " + (horse.getConfidence()*100) + "%)");
+        JLabel horseLabel = new JLabel(horse.getName() + " (Current confidence: " + String.format("%.2f", (horse.getConfidence()*100)) + "%)");
         horseLabel.setFont(new Font("Arial", Font.BOLD, 14));
         subPanel1.add(horseLabel);
         topPanelHorseLabels.add(horseLabel);
+        frame.revalidate();
+        frame.repaint();
+    }
+
+    // Reloads all of the horse name and confidence labels in the top panel
+    public void reloadHorseLabelsTopPanel() {
+        for(int i = 0; i < topPanelHorseLabels.size(); i++) {
+            HorseV2 horse = this.laneHorses.get(i);
+            JLabel horseLabel = topPanelHorseLabels.get(i);
+            horseLabel.setText(horse.getName() + " (Current confidence: " + String.format("%.2f", (horse.getConfidence()*100)) + "%)");
+        }
         frame.revalidate();
         frame.repaint();
     }
@@ -233,6 +244,7 @@ public class RaceGUI {
                     pastRacesFile.savePastRace(pastRace);
 
                     markBets(); // Mark the bets as won or lost
+                    reloadHorseLabelsTopPanel(); // Reload all of the horse labels in the top panel
 
                     startRaceBtn.setEnabled(true);
                     ((Timer)e.getSource()).stop(); // Stops the timer
@@ -247,13 +259,12 @@ public class RaceGUI {
                 horsesFile.saveMultipleHorses(laneHorses, false);
 
                 PastRacesFile pastRacesFile = new PastRacesFile();
-            
                 PastRace pastRace = new PastRace(this.race.getRaceLength(), null, elapsedTimeSeconds);
-
                 pastRace.setTrackType(this.race.getTrackType());
                 pastRacesFile.savePastRace(pastRace);
 
                 markBets(); // Mark the bets as won or lost
+                reloadHorseLabelsTopPanel(); // Reload all of the horse labels in the top panel
 
                 startRaceBtn.setEnabled(true);
                 ((Timer)e.getSource()).stop();
