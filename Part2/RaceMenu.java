@@ -140,7 +140,7 @@ public class RaceMenu {
             try {
                 raceLengthInput = Integer.parseInt(raceLengthField.getText());
                 if(raceLengthInput < 10) {
-                    throw new NumberFormatException("Please enter a valid racetrack length. It has to be a valid number and at least 10 blocks long.");
+                    throw new NumberFormatException();
                 }
 
                 if(horsesListModel.getSize() < 2) {
@@ -149,7 +149,7 @@ public class RaceMenu {
 
                 setRaceConfiguration();
             } catch(NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Please enter a valid racetrack length. It has to be a valid number and at least 10 blocks long.", "ERROR", JOptionPane.ERROR_MESSAGE);
                 ex.printStackTrace();
             } catch(IllegalArgumentException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
