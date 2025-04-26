@@ -157,6 +157,10 @@ public class RaceMenu {
             } 
         });
 
+        cancelButton.addActionListener(e -> {
+            this.menuFrame.dispose();
+        });
+
         panel3.add(startRaceButton);
         panel3.add(cancelButton);
     }
