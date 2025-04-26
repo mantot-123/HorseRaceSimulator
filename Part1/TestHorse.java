@@ -30,9 +30,11 @@ public class TestHorse {
         Horse horse = new Horse('H', "Pippi Longstocking", 0.6);
         horse.moveForward();
         horse.moveForward();
+        horse.fall();
         // Resets horse distance 
         horse.goBackToStart();
-        System.out.println("DIstance travelled after going back to starting point: " + horse.getDistanceTravelled());
+        System.out.println("Distance travelled after going back to starting point: " + horse.getDistanceTravelled());
+        System.out.println("Is the horse fallen: " + horse.hasFallen());
     }
 
     public static void testHorse5() {

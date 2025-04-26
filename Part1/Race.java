@@ -32,7 +32,7 @@ public class Race
             lane2Horse = null;
             lane3Horse = null;
         } else {
-            System.out.println("ERROR: Cannot start race. The race track distance you entered is negative or 0.");
+            System.out.println("ERROR: Cannot create race. The race track distance you entered is negative or 0.");
         }
     }
     

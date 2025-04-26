@@ -65,6 +65,7 @@ public class Horse
     public void goBackToStart()
     {
         this.distanceTravelled = 0;   
+        this.isFallen = false;
     }
     
     public boolean hasFallen()
