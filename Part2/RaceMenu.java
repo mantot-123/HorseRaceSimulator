@@ -1,20 +1,29 @@
 import java.util.ArrayList;
 import java.util.Vector;
-import javax.management.openmbean.OpenDataException;
 import javax.swing.*;
 import java.awt.*;
-import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
 
 public class RaceMenu {
     RaceGUI race;
+
+    private EquipmentFile equipmentFile = new EquipmentFile();
+    private Vector<Equipment> equipmentList = new Vector<Equipment>(equipmentFile.getEquipmentList().values());
+
     private JFrame menuFrame = new JFrame("New race");
-    private JFrame raceFrame = new JFrame("Race in progress...");
-    private ArrayList<JTextField> horseNameFields = new ArrayList<JTextField>();
-    private ArrayList<JTextField> horseSymbolFields = new ArrayList<JTextField>();
-    private ArrayList<JComboBox<Equipment>> horseEquipmentFields = new ArrayList<JComboBox<Equipment>>();
+
+    JPanel panel1 = new JPanel(new GridLayout(0, 2));
+    JPanel panel2 = new JPanel(new GridLayout(0, 1));
+    JPanel panel3 = new JPanel(new GridLayout(0, 2));
+
+    private JTextField raceLengthField = new JTextField(15);
+    private JTextField horseNameField = new JTextField(15);
+    private JTextField horseSymbolField = new JTextField(15);
+    private JComboBox<Equipment> horseEquipmentField = new JComboBox<Equipment>(equipmentList); // Load horse equipment into the combo box
     
+    private DefaultListModel<HorseV2> horsesListModel = new DefaultListModel<HorseV2>();
+    private JList<HorseV2> horsesListDisplay = new JList<HorseV2>(horsesListModel);
+
     private int raceLengthInput = 0;
-    private int horseCount = 0;
 
     public RaceMenu() {
         HorsesListFile horsesFile = new HorsesListFile();
@@ -51,103 +60,120 @@ public class RaceMenu {
         }
     }
 
-    public void openRaceMenuWindow() {
-        menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        menuFrame.setSize(1000, 700);
-        menuFrame.setLayout(new BorderLayout());
+    public void loadTopPanel() {
+        JButton addHorseBtn = new JButton("Add horse");
+        JButton removeHorseBtn = new JButton("Remove selected horse");
 
-        JPanel panel1 = new JPanel(new GridLayout(0, 2, 10, 10));
-        JTextField raceLengthField = new JTextField(15);
-        JButton addHorseBtn = new JButton("Add horse ");
-
-        addHorseBtn.addActionListener(e -> {
-            if(horseCount >= 6) {
-                JOptionPane.showMessageDialog(null, "ERROR: You can only have up to 6 horses in the race");
-                return;
-            }
-
-            horseCount++;
-
-            JTextField horseNameField = new JTextField(15);
-            JTextField horseSymbolField = new JTextField(15);
-
-            EquipmentFile equipmentFile = new EquipmentFile();
-            Vector<Equipment> equipmentChoices = new Vector<Equipment>(equipmentFile.getEquipmentList().values());
-
-            JComboBox<Equipment> horseEquipmentField = new JComboBox<Equipment>(equipmentChoices);
-
-            horseNameFields.add(horseNameField);
-            horseSymbolFields.add(horseSymbolField);
-            horseEquipmentFields.add(horseEquipmentField);
-
-            panel1.add(new JLabel("Horse #" + horseCount + " name: "));
-            panel1.add(horseNameField);
-            panel1.add(new JLabel("Horse #" + horseCount + " symbol: "));
-            panel1.add(horseSymbolField);
-            panel1.add(new JLabel("Horse #" + horseCount + " equipment: "));
-            panel1.add(horseEquipmentField);
-
-            panel1.revalidate();
-            panel1.repaint();
-        });
-        
         panel1.add(new JLabel("Race length: "));
         panel1.add(raceLengthField);
-        panel1.add(new JLabel("Horses: "));
-        panel1.add(addHorseBtn);
+        panel1.add(new JLabel("Horse name: "));
+        panel1.add(horseNameField);
+        panel1.add(new JLabel("Horse symbol: "));
+        panel1.add(horseSymbolField);
+        panel1.add(new JLabel("Horse equipment: "));
+        panel1.add(horseEquipmentField);
 
-        JPanel panel2 = new JPanel(new GridLayout(2, 1));
-        JButton startRaceButton = new JButton("Start race");
-        JButton cancelButton = new JButton("Cancel");
-
-        startRaceButton.addActionListener(e -> {
-            // Check if the racetrack length is a valid number + if it's at least 10 blocks long
+        addHorseBtn.addActionListener(e -> {
             try {
-                raceLengthInput = Integer.parseInt(raceLengthField.getText());
-                if(raceLengthInput < 10) {
-                    throw new NumberFormatException();
-                }
+                if(horseNameField.getText().isEmpty())
+                    throw new IllegalArgumentException("Please enter a name for your horse.");
 
-                // Check if there are at least 2 horses to start the race
-                if(horseCount < 2) {
-                    throw new IllegalArgumentException("You must have at least 2 horses before starting the race.");
-                }
+                if(horseSymbolField.getText().isEmpty())
+                    throw new IllegalArgumentException("Please enter a symbol for your horse.");
 
-                // Check for any empty horse name and symbol fields
-                for(JTextField nameField: this.horseNameFields) {
-                    String horseName = nameField.getText();
-                    if(horseName.isEmpty()) {
-                        throw new IllegalArgumentException("One of your horses' names are empty! Please enter a name for all horses.");
-                    }
+                if(horseSymbolField.getText().length() > 1)
+                    throw new IllegalArgumentException("You can only use 1 character as a symbol for your horse. Please try again.");
+                
+                // Check if the name and symbol are already taken by another horse
+                for(int i = 0; i < horsesListModel.getSize(); i++) {
+                    HorseV2 horse = horsesListModel.getElementAt(i);
+                    if(horse.getName().equalsIgnoreCase(horseNameField.getText()))
+                        throw new IllegalArgumentException("That horse name is already taken. Please try another one.");
+                    
+                    if(horse.getSymbol() == horseSymbolField.getText().charAt(0))
+                        throw new IllegalArgumentException("That horse symbol is already taken. Please try another one.");
                 }
+                
 
-                for(JTextField symbolField: this.horseSymbolFields) {
-                    String horseSymbol = symbolField.getText();
-                    if(horseSymbol.isEmpty()) {
-                        throw new IllegalArgumentException("One of your horses' symbols are empty! Please enter a symbol for all horses.");
-                    } else if(horseSymbol.length() > 1) {
-                        throw new IllegalArgumentException("You can only use 1 character as a symbol for all your horses. Check your horses and try again.");
-                    }
-                }
-    
-                raceLengthInput = Integer.parseInt(raceLengthField.getText());
-                setRaceConfiguration();
+                String horseName = horseNameField.getText();
+                char horseSymbol = horseSymbolField.getText().charAt(0);
+                Equipment horseEquipment = (Equipment)horseEquipmentField.getSelectedItem();
+                double initialConfidence = 0.5; // Starting confidence rating
+                HorseV2 newHorse = new HorseV2(horseSymbol, horseName, initialConfidence, horseEquipment);
+                horsesListModel.addElement(newHorse);
 
-            } catch(NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null, "Please enter a valid race length. It must be a whole number, and it has to be at least 10 blocks long.", "ERROR", JOptionPane.ERROR_MESSAGE);
-                ex.printStackTrace();
+                horseNameField.setText("");
+                horseSymbolField.setText("");
+                horseEquipmentField.setSelectedIndex(0);
+
             } catch(IllegalArgumentException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
                 ex.printStackTrace();
             }
-
         });
 
-        panel2.add(startRaceButton);
-        panel2.add(cancelButton);
+        removeHorseBtn.addActionListener(e -> {
+            try {
+                if(horsesListDisplay.getSelectedValue() == null)
+                    throw new IllegalArgumentException("Please select a horse to remove.");
 
-        menuFrame.add(panel1, BorderLayout.CENTER);
-        menuFrame.add(panel2, BorderLayout.SOUTH);
+                horsesListModel.removeElement(horsesListDisplay.getSelectedValue());
+            } catch(IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+            }
+        });
+
+        panel1.add(addHorseBtn);
+        panel1.add(removeHorseBtn);
+    }
+
+    public void loadCenterPanel() {
+        panel2.add(horsesListDisplay);
+    }
+
+    public void loadBottomPanel() {
+        JButton startRaceButton = new JButton("Start race");
+        JButton cancelButton = new JButton("Cancel");
+
+        startRaceButton.addActionListener(e -> {
+            try {
+                raceLengthInput = Integer.parseInt(raceLengthField.getText());
+                if(raceLengthInput < 10) {
+                    throw new NumberFormatException("Please enter a valid racetrack length. It has to be a valid number and at least 10 blocks long.");
+                }
+
+                if(horsesListModel.getSize() < 2) {
+                    throw new IllegalArgumentException("You need to have at least 2 horses to start the race.");
+                }
+
+                setRaceConfiguration();
+            } catch(NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+            } catch(IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+            } 
+        });
+
+        panel3.add(startRaceButton);
+        panel3.add(cancelButton);
+    }
+
+    public void openRaceMenuWindow() {
+        menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        menuFrame.setSize(380, 350);
+        menuFrame.setLayout(new BorderLayout());
+
+        loadTopPanel();
+        loadCenterPanel();
+        loadBottomPanel();
+
+        menuFrame.add(panel1, BorderLayout.NORTH);
+        menuFrame.add(panel2, BorderLayout.CENTER);
+        menuFrame.add(panel3, BorderLayout.SOUTH);
+        menuFrame.setResizable(false);
         menuFrame.setVisible(true);
     }
 
@@ -155,13 +181,8 @@ public class RaceMenu {
         // Add all of the horses in the fields to the participating horses list ("laneHorses")
         this.race = new RaceGUI(this.raceLengthInput);
 
-        for(int i = 0; i < horseNameFields.size(); i++) {
-            String horseName = this.horseNameFields.get(i).getText();
-            char horseSymbol = this.horseSymbolFields.get(i).getText().charAt(0);
-            Equipment horseEquipment = (Equipment)this.horseEquipmentFields.get(i).getSelectedItem();
-            double initialConfidence = 0.5; // Starting confidence rating
-            HorseV2 newHorse = new HorseV2(horseSymbol, horseName, initialConfidence, horseEquipment);
-            this.race.addHorse(newHorse);
+        for(int i = 0; i < horsesListModel.getSize(); i++) {
+            this.race.addHorse(horsesListModel.getElementAt(i));
         }
 
         HorsesListFile horsesFile = new HorsesListFile();
