@@ -146,6 +146,9 @@ public class HorseV2
     }
 
     public double getWinRating() {
+        if(this.gamesWon == 0) {
+            return 0.0;
+        }
         return (double)this.gamesWon / (double)this.gamesPlayed;
     }
 
