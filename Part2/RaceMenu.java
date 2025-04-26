@@ -182,15 +182,22 @@ public class RaceMenu {
     }
 
     public void setRaceConfiguration() {
+        HorsesListFile horsesFile = new HorsesListFile();
+
+        // Save all the horses to the horses CSV file
+        ArrayList<HorseV2> horses = new ArrayList<HorseV2>(horsesListModel.getSize());
+        for(int i = 0; i < horsesListModel.getSize(); i++) {
+            horses.add(horsesListModel.getElementAt(i));
+        }
+
+        horsesFile.saveMultipleHorses(horses, false);
+
         // Add all of the horses in the fields to the participating horses list ("laneHorses")
         this.race = new RaceGUI(this.raceLengthInput);
 
         for(int i = 0; i < horsesListModel.getSize(); i++) {
             this.race.addHorse(horsesListModel.getElementAt(i));
         }
-
-        HorsesListFile horsesFile = new HorsesListFile();
-        horsesFile.saveMultipleHorses(this.race.getLaneHorses(), false);
 
         RaceInfoFile raceInfoFile = new RaceInfoFile();
         raceInfoFile.saveRaceInfo(this.race.getRaceInfo());
