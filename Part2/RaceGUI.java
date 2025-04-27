@@ -243,7 +243,8 @@ public class RaceGUI {
                     pastRace.setTrackType(this.race.getTrackType());
                     pastRacesFile.savePastRace(pastRace);
 
-                    markBets(); // Mark the bets as won or lost
+                    markBets(); 
+                    reloadBetHistoryWindow();
                     reloadHorseLabelsTopPanel(); // Reload all of the horse labels in the top panel
 
                     startRaceBtn.setEnabled(true);
@@ -264,6 +265,7 @@ public class RaceGUI {
                 pastRacesFile.savePastRace(pastRace);
 
                 markBets(); // Mark the bets as won or lost
+                reloadBetHistoryWindow();
                 reloadHorseLabelsTopPanel(); // Reload all of the horse labels in the top panel
 
                 startRaceBtn.setEnabled(true);
@@ -404,7 +406,11 @@ public class RaceGUI {
         }
 
         this.betHistoryDisplay.getBetHistoryFile().saveMultipleBets(bets, false);
+    }
 
-        this.betHistoryDisplay.reloadBetHistoryList(); // Reload the bet history list with the new bets
+    // Reload the bet history window with the new bets and new horse data
+    private void reloadBetHistoryWindow() {
+        this.betHistoryDisplay.reloadPlaceBetForm(); 
+        this.betHistoryDisplay.reloadBetHistoryList();
     }
 }

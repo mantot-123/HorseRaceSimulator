@@ -101,6 +101,18 @@ public class BetHistoryDisplay {
         this.panel2.add(scrollPane);
     }
 
+    public void reloadPlaceBetForm() {
+        this.horseComboBox.removeAllItems(); // Clear existing horses from the combo box
+
+        this.panel1.removeAll(); // Clears all of the widgets from the form
+        this.panel1.revalidate();
+        this.panel1.repaint();
+
+        this.horsesFile.loadHorses(); // Reload the horses with the new data
+
+        this.loadPlaceBetForm(); 
+    }
+
     public void reloadBetHistoryList() {
         this.betsListModel.clear(); // Clear the list before loading the bets
 
